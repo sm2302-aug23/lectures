@@ -1,0 +1,1494 @@
+---
+params:
+  handout: 
+title: "SM-2302 Software for Mathematicians"
+subtitle: "R1: Logic and Types in R \\only<handout>{\\emph{[handout version]}}"
+author: "Dr. Haziq Jamil"
+date: "Semester I 2023/24"
+institute: |
+  | Mathematical Sciences, Faculty of Science, UBD
+  | \url{https://haziqj.ml}
+output: 
+  beamer_presentation:
+    template: ubd_beamer_rmd.tex
+    latex_engine: xelatex
+    slide_level: 3
+    keep_tex: false
+    citation_package: biblatex
+    pandoc_args: ["--lua-filter=luafilters/mycustom.lua", "--lua-filter=luafilters/bookdown.lua"] 
+header-includes:
+  - \renewcommand{\Pr}{\operatorname{P}}
+  - \usetikzlibrary{fit}
+  - \usetikzlibrary{shapes.geometric}
+# include-after:
+#   -
+aspectratio: 169
+handout: "`r params$handout`"
+toc: false
+toctitle: Overview
+tocmulticol:
+transitions: true
+progressdots: false
+# banner: true
+# logo: true
+# bibliography: 
+# bibstyle: 
+refslide: false
+thankyou: false
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include = FALSE}
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+# https://stackoverflow.com/questions/25646333/code-chunk-font-size-in-rmarkdown-with-knitr-and-latex
+
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  warning = FALSE,
+  message = FALSE,
+  error = TRUE,
+  fig.height = 5, 
+  fig.width = 5, 
+  fig.path = "figure/", 
+  fig.align = "center",
+  cache = TRUE, 
+  cache.path = "_cache/",
+  size = "footnotesize"
+)
+options(width = 85)  # if 4:3 set to 55; if 16:9 set to 70
+library(tidyverse)
+theme_set(theme_classic())
+library(tidyverse)
+library(ggpubr)
+library(cowplot)
+library(ggrepel)
+library(ggforce)
+
+ubdblue <- "#325494"
+ubdteal <- "#58DDB3"
+ubdyellow <- "#F5C946"
+ubdred <- "#B10F2E"
+navyblue <- "#002f5c"
+solidpink <- "#8E3B46"
+
+mycol <- c("#30123BFF", "#4777EFFF", "#1BD0D5FF", "#62FC6BFF", "#D2E935FF",
+           "#FE9B2DFF", "#DB3A07FF", "#7A0403FF")
+```
+
+
+
+### Introduction
+
+> In R (almost) everything is a vector
+
+
+\vspace{1em}
+
+The fundamental building block of data in R are vectors (collections of related values, objects, data structures, etc). 
+
+\vspace{1em}
+
+R has two types of vectors:
+
+* **atomic** vectors (*vectors*)
+
+    - homogeneous collections of the *same* type (e.g. all `TRUE`/`FALSE` values, all numbers, or all character strings).
+
+* **generic** vectors (*lists*)
+  
+    - heterogeneous collections of *any* type of R object, even other lists <br/> 
+    (meaning they can have a hierarchical/tree-like structure).
+
+\blfootnote{R material lecture slides largely based off \url{https://sta323-sp22.github.io/}}
+
+
+# Atomic Vectors
+
+R has six atomic vector types, we can check the type of any object in R using the `typeof()` function
+
+`typeof()`  |  `mode()`     
+:-----------|:------------
+logical     |  logical    
+double      |  numeric    
+integer     |  numeric    
+character   |  character  
+complex     |  complex    
+raw         |  raw        
+
+Mode is a higher level abstraction, we will discuss this in detail a bit later.
+
+<!-- .footnote[ -->
+<!-- There are additional types in R, e.g. generic vectors have type `list`, but more on these later. See `?typeof` for more information. -->
+<!-- ] -->
+
+
+### `logical` -- Boolean values (`TRUE` and `FALSE`)
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+typeof(TRUE)
+typeof(FALSE)
+```
+:::
+
+:::: {.column width=48%}
+```{r}
+mode(TRUE)
+mode(FALSE)
+```
+:::
+
+:::
+
+\vspace{1em}
+
+R will let you use `T` and `F` as shortcuts to `TRUE` and `FALSE`, this is a bad practice as these values are actually global variables that can be overwritten.
+
+```{r}
+T
+T <- FALSE
+T
+```
+
+
+### `character` -- text strings
+
+Either single or double quotes are fine, opening and closing quote must match.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+typeof("hello")
+typeof('world')
+```
+::::
+
+:::: {.column width=48%}
+```{r}
+mode("hello")
+mode('world')
+```
+::::
+
+:::
+
+\vspace{1em}
+
+Quote characters can be included by escaping or using a non-matching quote.
+
+```{r}
+"abc'123"
+'abc"123'
+```
+
+
+### Numeric types
+
+`double` - floating point values (these are the default numerical type)
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+typeof(1.33)
+typeof(7)
+```
+::::
+
+:::: {.column width=48%}
+```{r}
+mode(1.33)
+mode(7)
+```
+::::
+
+:::
+
+\vspace{1em}
+
+`integer` - integer values (literals are indicated with an `L` suffix)
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+typeof( 7L )
+typeof( 1:3 )
+```
+::::
+
+:::: {.column width=48%}
+```{r}
+mode( 7L )
+mode( 1:3 )
+```
+::::
+
+:::
+
+### Concatenation
+
+Atomic vectors can be grown (combined) using the concatenate `c()` function.
+
+```{r}
+c(1, 2, 3)
+c("Hello", "World!")
+c(1, 1:10)
+c(1, c(2, c(3)))
+```
+
+\blfootnote{Note: Atomic vectors are inherently flat.}
+
+
+### Inspecting types
+
+- `typeof(x)`: returns a character vector (length 1) of the *type* of object `x`.
+
+- `mode(x)`: returns a character vector (length 1) of the *mode* of object `x`.
+
+- `str(x)`: compactly display the internal *str*ucture of object `x`.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=32%}
+```{r}
+typeof(1)
+typeof(1L)
+typeof("A")
+typeof(TRUE)
+```
+::::
+
+:::: {.column width=32%}
+```{r}
+mode(1)
+mode(1L)
+mode("A")
+mode(TRUE)
+```
+::::
+
+:::: {.column width=32%}
+```{r}
+str(1)
+str(1L)
+str("A")
+str(TRUE)
+```
+::::
+
+:::
+
+
+### Type predicates
+
+* `is.logical(x)`   - returns `TRUE` if `x` has *type* `logical`.
+* `is.character(x)` - returns `TRUE` if `x` has *type* `character`.
+* `is.integer(x)`   - returns `TRUE` if `x` has *type* `integer`.
+* `is.numeric(x)`   - returns `TRUE` if `x` has *mode* `numeric`.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=32%}
+```{r}
+is.integer(1)
+is.integer(1L)
+is.integer(3:7)
+```
+::::
+
+:::: {.column width=32%}
+```{r}
+is.double(1)
+is.double(1L)
+is.double(3:8)
+```
+::::
+
+:::: {.column width=32%}
+```{r}
+is.numeric(1)
+is.numeric(1L)
+is.numeric(3:7)
+```
+::::
+
+:::
+
+\vspace{1em}
+
+
+Many other useful predicates: `is.double()`, `is.atomic()`, `is.list()`, `is.vector()`, and some packages provide their own too.
+
+
+### Type coercion
+
+R is a dynamically typed language -- it will automatically convert between most types without raising warnings or errors. Keep in mind the rule that atomic vectors must always contain values of the same type.
+
+```{r}
+c(1, "Hello")
+c(FALSE, 3L)
+c(1.2, 3L)
+```
+
+### Operator coercion
+
+Operators and functions will generally attempt to coerce values to an appropriate type for the given operation.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+3.1+1L
+5 + FALSE
+TRUE & FALSE
+TRUE & 7
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+log(1)
+log(TRUE)
+TRUE | FALSE
+FALSE | !5
+```
+::::
+
+:::
+
+
+### Explicit coercion
+
+Most of the `is` functions we just saw have an `as` variant which can be used for *explicit* coercion.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+as.logical(5.2)
+as.character(TRUE)
+as.integer(pi)
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+as.numeric(FALSE)
+as.double("7.2")
+as.double("one")
+```
+::::
+
+:::
+
+# Conditionals & Control Flow
+
+### Logical (boolean) operators
+
+
+
+|  Operator                     |  Operation    |  Vectorized? 
+|:-----------------------------:|:-------------:|:------------:
+| <code>x &#124; y</code>       |  or           |   Yes        
+| `x & y`                       |  and          |   Yes        
+| `!x`                          |  not          |   Yes        
+| <code>x &#124;&#124; y</code> |  or           |   No         
+| `x && y`                      |  and          |   No         
+|`xor(x, y)`                    |  exclusive or |   Yes     
+
+
+### Vectorized?
+
+```{r}
+x <- c(TRUE, FALSE, TRUE)
+y <- c(FALSE, TRUE, TRUE)
+```
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x | y
+x & y
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+x || y
+x && y
+```
+::::
+
+:::
+
+\vspace{2em}
+
+Note: both `||` and `&&` only use the *first* value in the vector, all other values are ignored, there is no warning about the ignored values.
+
+
+### Vectorization and math
+
+Almost all of the basic mathematical operations (and many other functions) in R are vectorized.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+c(1, 2, 3) + c(3, 2, 1)
+c(1, 2, 3) / c(3, 2, 1)
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+log(c(1, 3, 0))
+sin(c(1, 2, 3))
+```
+::::
+
+:::
+
+
+
+### Length coercion (aka recycling)
+
+```{r}
+x <- c(TRUE, FALSE, TRUE)
+y <- TRUE
+z <- c(FALSE, TRUE)
+```
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x | y
+x & y
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+y | z
+y & z
+```
+::::
+
+:::
+
+\vspace{1em}
+
+```{r}
+x | z
+```
+
+
+### Length coercion and math
+
+The same length coercion rules apply for most basic mathematical operators as well.
+
+
+
+```{r}
+x <- c(1, 2, 3)
+y <- c(5, 4)
+z <- 10L
+```
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x + x
+x + z
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+log(x)
+y / z
+```
+::::
+
+:::
+
+
+```{r}
+x %% y
+```
+
+
+
+### Comparison operators
+
+  Operator  |  Comparison                |  Vectorized?
+:----------:|:--------------------------:|:----------------:
+ `x < y`    |  less than                 |  Yes
+ `x > y`    |  greater than              |  Yes
+ `x <= y`   |  less than or equal to     |  Yes
+ `x >= y`   |  greater than or equal to  |  Yes
+ `x != y`   |  not equal to              |  Yes
+ `x == y`   |  equal to                  |  Yes
+ `x %in% y` |  contains                  |  Yes (over `x`)\footnotemark
+ 
+ 
+ \footnotetext{Over `x` here means the returned value will have the same length as `x`.}
+ 
+### Comparisons
+
+```{r}
+x <- c("A","B","C")
+z <- "A"
+```
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x == z
+x != z
+x > z
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+x %in% z
+z %in% x
+```
+::::
+
+:::
+
+ 
+### Conditional control flow
+
+Conditional execution of code blocks is achieved via `if` statements. 
+
+```{r}
+x <- c(1, 3)
+```
+
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+if (3 %in% x)
+  print("Contains 3!")
+if (1 %in% x)
+  print("Contains 1!")
+```
+::::
+
+:::: {.column width=49%}
+```{r}
+if (5 %in% x)
+  print("Contains 5!")
+```
+
+```{r}
+if (5 %in% x) {
+  print("Contains 5!")
+} else {
+  print("Does not contain 5!")
+}
+```
+::::
+
+:::
+
+### `if` is not vectorized
+
+```{r}
+x <- c(1, 3)
+```
+
+
+
+```{r, error = TRUE}
+if (x == 1)
+  print("x is 1!")
+```
+
+
+```{r, error = TRUE}
+if (x == 3)
+  print("x is 3!")
+```
+
+
+### Collapsing logical vectors
+
+There are a couple of helper functions for collapsing a logical vector down to a single value: `any`, `all`
+
+```{r}
+x <- c(3,4,1)
+```
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x >= 2
+any(x >= 2)
+all(x >= 2)
+x <= 4
+```
+::::
+
+:::: {.column width=49%}
+
+
+```{r}
+any(x <= 4)
+all(x <= 4)
+if (any(x == 3)) 
+  print("x contains 3!")
+```
+::::
+
+:::
+
+
+
+### `else if` and `else`
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x <- 3
+
+if (x < 0) {
+  "x is negative"
+} else if (x > 0) {
+  "x is positive"
+} else {
+  "x is zero"
+}
+```
+::::
+
+:::: {.column width=49%}
+
+
+```{r}
+x <- 0
+
+if (x < 0) {
+  "x is negative"
+} else if (x > 0) {
+  "x is positive"
+} else {
+  "x is zero"
+}
+```
+::::
+
+:::
+
+
+
+### `if` and `return`
+
+R's `if` conditional statements return a value (invisibly), the two following implementations are equivalent.
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+x <- 5
+```
+
+```{r}
+s <- if (x %% 2 == 0) {
+  x / 2
+} else {
+  3 * x + 1
+}
+```
+
+```{r}
+s
+```
+::::
+
+:::: {.column width=49%}
+
+
+```{r}
+x <- 5
+```
+
+```{r}
+if (x %% 2 == 0) {
+  s <- x / 2
+} else {
+  s <- 3 * x + 1
+}
+```
+
+```{r}
+s
+```
+::::
+
+:::
+
+\vspace{1em}
+
+Notice that conditional expressions are evaluated in the parent scope.
+
+# Error Checking
+
+
+### `stop` and `stopifnot`
+
+Often we want to validate user input or function arguments - if our assumptions are not met then we often want to report the error and stop execution. 
+
+
+
+```{r error=TRUE}
+ok <- FALSE
+```
+
+```{r error=TRUE}
+if (!ok)
+  stop("Things are not ok.")
+```
+
+```{r error=TRUE}
+stopifnot(ok)
+```
+
+
+
+
+### Style choices
+
+::: {.columns}
+
+:::: {.column width=49%}
+
+Do stuff:
+```{r eval=FALSE}
+if (condition_one) {
+  ##
+  ## Do stuff
+  ##
+} else if (condition_two) {
+  ##
+  ## Do other stuff
+  ##
+} else if (condition_error) {
+  stop("Condition error occured")
+}
+```
+::::
+
+
+:::: {.column width=49%}
+Do stuff (better):
+```{r eval=FALSE}
+# Do stuff better
+if (condition_error) {
+  stop("Condition error occured")
+}
+
+if (condition_one) {
+  ##
+  ## Do stuff
+  ##
+} else if (condition_two) {
+  ##
+  ## Do other stuff
+  ##
+}
+```
+
+::::
+
+:::
+
+# Missing Values
+
+
+R uses `NA` to represent missing values in its data structures, what may not be obvious is that there are different `NA`s for different atomic types.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+typeof(NA)
+typeof(NA + 1)
+typeof(NA + 1L)
+typeof(c(NA, ""))
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+typeof(NA_character_)
+typeof(NA_real_)
+typeof(NA_integer_)
+typeof(NA_complex_)
+```
+
+::::
+
+:::
+
+### NA "stickiness" 
+
+Because `NA`s represent missing values it makes sense that any calculation using them should also be missing.
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+1 + NA
+1 / NA
+NA * 5
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+sqrt(NA)
+3 ^ NA
+sum(c(1, 2, 3, NA))
+```
+
+::::
+
+:::
+
+\vspace{0.5em}
+
+Summarizing functions (e.g. `sum()`, `mean()`, `sd()`, etc.) will often have a `na.rm` argument which will allow you to *drop* missing values.
+
+\vspace{-0.5em}
+
+```{r}
+sum(c(1, 2, 3, NA), na.rm = TRUE)
+```
+
+
+
+### NAs are not always sticky 
+  
+A useful mental model for `NA`s is to consider them as a unknown value that could take any of the possible values for that type. 
+For numbers or characters this isn't very helpful, but for a logical value we know that the value must either be `TRUE` or `FALSE` and we can use that when deciding what value to return.
+
+
+```{r}
+TRUE & NA
+```
+
+```{r}
+FALSE & NA
+```
+
+```{r}
+TRUE | NA
+```
+
+```{r}
+FALSE | NA
+```
+
+
+
+
+### Conditionals and missing values
+
+`NA`s can be problematic in some cases (particularly for control flow)
+
+
+
+```{r error=TRUE}
+1 == NA
+```
+
+
+```{r error=TRUE}
+if (2 != NA)
+  "Here"
+```
+
+
+```{r error=TRUE}
+if (all(c(1, 2, NA, 4) >= 1))
+  "There"
+```
+
+
+```{r error=TRUE}
+if (any(c(1, 2, NA, 4) >= 1))
+  "There"
+```
+
+
+### Testing for `NA`
+
+To explicitly test if a value is missing it is necessary to use `is.na` (often along with `any` or `all`).
+
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+NA == NA
+is.na(NA)
+is.na(1)
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+is.na(c(1, 2, 3, NA))
+any(is.na(c(1, 2, 3, NA)))
+all(is.na(c(1, 2, 3, NA)))
+```
+
+::::
+
+:::
+
+### Other special values (double)
+
+These are defined as part of the IEEE floating point standard (not unique to R)
+
+* `NaN` -- Not a number
+* `Inf` -- Positive infinity
+* `-Inf` -- Negative infinity
+
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+pi / 0
+0 / 0
+1 / 0 + 1 / 0
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+1 / 0 - 1 / 0
+NaN / NA
+NaN * NA
+```
+
+::::
+
+:::
+
+
+
+### Testing for `Inf` and `NaN`
+
+`NaN` and `Inf` don't have the same testing issues that `NA`s do, but there are still convenience functions for testing for these types of values
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+is.finite(Inf)
+is.infinite(-Inf)
+is.nan(Inf)
+is.nan(-Inf)
+Inf > 1
+-Inf > 1
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+is.finite(NaN)
+is.infinite(NaN)
+is.nan(NaN)
+is.finite(NA)
+is.infinite(NA)
+is.nan(NA)
+```
+
+::::
+
+:::
+
+
+### Coercion for infinity and NaN
+  
+First remember that `Inf`, `-Inf`, and `NaN` are doubles, however their coercion behavior is not the same as for other doubles
+
+```{r}
+as.integer(Inf)
+as.integer(NaN)
+```
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=49%}
+```{r}
+as.logical(Inf)
+as.logical(NaN)
+```
+::::
+
+
+:::: {.column width=49%}
+```{r}
+as.character(Inf)
+as.character(NaN)
+```
+
+::::
+
+:::
+
+
+
+# Functions
+
+
+### Function parts
+
+Functions are defined by two components: the arguments (`formals`) and the code (`body`). 
+Functions are assigned names like any other object in R (using `=` or `<-`)
+
+```{r}
+gcd <- function(x1, y1, x2 = 0, y2 = 0) {
+  R <- 6371  # Earth mean radius in km
+  acos(sin(y1) * sin(y2) + cos(y1) * cos(y2) * cos(x2 - x1)) * R   # distance in km
+}
+```
+
+\vspace{-2em}
+
+::: {.columns}
+
+:::: {.column width=25%}
+```{r}
+typeof(gcd)
+formals(gcd)
+```
+::::
+
+
+:::: {.column width=72%}
+```{r}
+mode(gcd)
+body(gcd)
+```
+
+::::
+
+:::
+
+
+### Return values
+
+There are two approaches to returning values from functions in R.
+
+\vspace{1em}
+
+**Explicit**: using one or more `return` function calls
+
+```{r}
+f <- function(x) {
+  return(x * x)
+}
+f(2)
+```
+
+
+
+**Implicit**: return value of the last expression is returned.
+
+```{r}
+g <- function(x) {
+  x * x
+}
+g(3)
+```
+
+
+
+<!-- ### Invisible returns -->
+
+<!-- Many functions in R make use of an invisible return value -->
+
+<!-- ```{r} -->
+<!-- f = function(x) { -->
+<!--   print(x) -->
+<!-- } -->
+
+<!-- y = f(1) -->
+<!-- y -->
+<!-- ``` -->
+
+
+
+<!-- ```{r} -->
+<!-- g = function(x) { -->
+<!--   invisible(x) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- g(2) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- z = g(2) -->
+<!-- z -->
+<!-- ``` -->
+
+
+
+### Returning multiple values
+
+If we want a function to return more than one value we can group things using atomic vectors or lists.
+
+```{r}
+f <- function(x) c(x, x ^ 2, x ^ 3)
+f(1:2)
+```
+
+```{r}
+g <- function(x) list(x, "hello")
+g(1:2)
+```
+
+More on lists next time.
+
+### Argument names
+
+When defining a function we explicitly define names for the arguments, which become variables within the scope of the function.
+When calling a function we can use these names to pass arguments in an alternative order.
+
+
+```{r}
+f <- function(x, y, z) {
+  paste0("x = ", x, ", y = ", y, ", z = ", z)
+}
+```
+
+\vspace{-3em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+f(1, 2, 3)
+f(z = 1, x = 2, y = 3)
+```
+::::
+
+
+:::: {.column width=48%}
+```{r}
+f(y = 2, 1, 3)
+f(y = 2, 1, x = 3)
+```
+
+::::
+
+:::
+
+```{r, error=TRUE}
+f(1, 2, 3, 4)
+```
+
+
+
+### Argument defaults
+
+It is also possible to give function arguments default values, so that they don't need to be provided every time the function is called.
+
+```{r}
+f <- function(x, y = 1, z = 1) {
+  paste0("x = ", x, ", y = ", y, ", z = ", z)
+}
+```
+
+\vspace{-3em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+f(3)
+f(x = 3)
+```
+::::
+
+
+:::: {.column width=48%}
+```{r}
+f(z = 3, x = 2)
+f(y = 2, 2)
+```
+
+::::
+
+:::
+
+```{r, error=TRUE}
+f()
+```
+
+
+
+### Scope
+
+R has generous scoping rules, if it can't find a variable in the current scope (e.g. a function's body) it will look for it in the next higher scope, and so on.
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+y <- 1
+
+f <- function(x) {
+  x + y
+}
+
+f(3)
+```
+::::
+
+
+:::: {.column width=48%}
+```{r}
+y <- 1
+
+g <- function(x) {
+  y <- 2
+  x + y
+}
+
+g(3)
+y
+```
+
+::::
+
+:::
+
+### Scope (cont.)
+
+
+Additionally, variables defined within a scope only persist for the duration of that scope, and do not overwrite variables at a higher scope.
+
+```{r}
+x <- y <- z <- 1
+
+f <- function() {
+    y <- 2
+    g <- function() {
+      z <- 3
+      return(x + y + z)
+    }
+    return(g())
+}
+f()
+c(x, y, z)
+```
+
+
+
+
+# Loops
+
+
+### `for` loops
+
+Simplest, and most common type of loop in R--given a vector iterate through the elements and evaluate the code block for each.
+
+
+```{r}
+is_even <- function(x) {
+  res <- c()
+  
+  for(val in x) {
+    res <- c(res, val %% 2 == 0)
+  }
+  
+  res
+}
+is_even(1:10)
+is_even(seq(1, 5, 2))
+```
+
+
+### `while` loops
+
+Repeat until the given condition is **not** met (i.e. evaluates to `FALSE`)
+
+```{r}
+make_seq <- function(from = 1, to = 1, by = 1) {
+  res <- c(from)
+  cur <- from
+  
+  while(cur + by <= to) {
+    cur = cur + by
+    res = c(res, cur)
+  }
+  
+  res
+}
+make_seq(1, 6)
+make_seq(1, 6, 2)
+```
+
+<!-- ### `repeat` loops -->
+
+<!-- Repeat the loop until a `break` is encountered -->
+
+<!-- ```{r} -->
+<!-- make_seq2 = function(from = 1, to = 1, by = 1) { -->
+<!--   res <- c(from) -->
+<!--   cur <- from -->
+
+<!--   repeat { -->
+<!--     cur <- cur + by -->
+
+<!--     if (cur > to) -->
+<!--       break -->
+
+<!--     res <- c(res, cur) -->
+<!--   } -->
+
+<!--   res -->
+<!-- } -->
+<!-- make_seq2(1, 6) -->
+<!-- make_seq2(1, 6, 2) -->
+<!-- ``` -->
+
+
+
+### Some helpful functions
+
+Often we want to use a loop across the indexes of an object and not the elements themselves. There are several useful functions to help you do this: `:`, `length`, `seq`, `seq_along`, `seq_len`, etc.
+
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+4:7
+length(4:7)
+seq(4,7)
+```
+::::
+
+
+:::: {.column width=48%}
+```{r}
+seq_along(4:7)
+seq_len(length(4:7))
+seq(4, 7, by = 2)
+```
+
+::::
+
+:::
+
+
+
+
+### Avoid using `1:length(x)`
+
+A common loop construction you'll see in a lot of R code is using `1:length(x)` to generate a vector of index values for the vector `x`. 
+
+\vspace{-1em}
+
+::: {.columns}
+
+:::: {.column width=48%}
+```{r}
+f <- function(x) {
+  for(i in 1:length(x)) {
+    print(i)
+  }
+}
+f(2:1)
+f(2)
+f(integer())
+```
+::::
+
+
+:::: {.column width=48%}
+```{r}
+g <- function(x) {
+  for(i in seq_along(x)) {
+    print(i)
+  }
+}
+g(2:1)
+g(2)
+g(integer())
+```
+
+::::
+
+:::
+
