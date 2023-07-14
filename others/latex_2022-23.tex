@@ -1,0 +1,64 @@
+\documentclass[a4paper,margins=1in]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{parskip}
+\usepackage{url}
+\usepackage{lscape}
+\usepackage{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+
+\title{SM-2302 \LaTeX~Mini Project}
+%\author{Haziq Jamil}
+\author{Semester I 2022/23}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Instructions}
+
+Part and parcel of conducting mathematical work is in reporting and disseminating said work.
+This assignment assesses your ability to properly typeset a mathematical document using \LaTeX.
+
+\begin{displayquote}
+\textit{Objective:} To produce a short report typeset using \LaTeX~on a chosen mathematical topic that uses Matlab or R code as part of the solution.
+\end{displayquote}
+
+The report should roughly be 6-10 pages in length, and contain the following:
+\begin{itemize}
+    \item Abstract
+    \item The problem statement
+    \item Proposed mathematical solution and accompanying code
+    \item Appropriate figures and tables
+    \item Bibliography
+\end{itemize}
+
+Students may choose from one of the suggested topics below, or come up with their own topics.
+
+\section*{Key requirements}
+
+\begin{enumerate}
+    \item The report must be typeset using \LaTeX, producing a single PDF file for submission; and at least one programming language (Matlab or R) must be used as part of the solution.
+    \item There must be at least \textbf{one} \emph{well-defined} problem statement for which a coding solution is offered.
+    \item Problems must be in the area of mathematics, statistics or data analytics. Sister areas are considered valid only if there is a quantitative aspect for which coding can be applied (e.g. machine learning, econometrics, physics, mathematical chemistry, biostatistics, etc.)
+\end{enumerate}
+
+\section*{Suggested topics}
+
+\begin{enumerate}
+    \item \textbf{Predator-prey models}. Predator-prey interaction is a classic research topic in ecology. The model is governed by first-order differential equations, which can be solved numerically in Matlab or R. Students may employ real data sets in ecology to compare the results of their predator-prey model simulations.
+    \item \textbf{SIR models}. An SIR model is an epidemiological model that computes the theoretical number of people infected with a contagious illness or virus in a closed population over time. Solve the SIR model using Matlab or R, and plot the spread of a virus over time. Discuss the possible outcomes of the SIR dynamics and explain the significance of the reproduction number and herd immunity.
+    \item \textbf{Numerical integration}. Often times, the exact solution to an integral cannot be found in closed-form. Numerical integration comprises a broad family of algorithms for calculating the numerical value of a definite integral. Students may focus on one such algorithm to write-up, e.g. the quadrature method or Monte Carlo integration.
+    \item \textbf{Measure theory}. A couple of interesting topics come to mind that could use some computer code to illuminate these topics: The Cantor set, The Cantor dust, Sierpinski carpet, and Sierpinski triangles.
+    \item \textbf{Other paradoxes in statistics}. You've now seen Bertrand's paradox when it comes to probability measures. Why not explore other interesting statistical paradoxes? Examples include Simpson's paradox, the ecological fallacy, selection bias, Monty Hall problem, etc.
+    \item \textbf{Analysis of data sets from kaggle.com}. The website \url{kaggle.com} contains a collection of data sets and coding challenges for data science. The topics range from sports, cars, housing, health, demography, and so on. Choose one data set and perform an analysis on it using the tools that you have learnt in this module.
+    \item \textbf{Pandigital square numbers}. A pandigital number is an integer that in a given base, contains each digit exactly once. For example, 15234 is a pandigital number in base 5. How many pandigital square numbers are there in base $n$?
+    \item \textbf{Solving a Sudoku game}. Sudoku is a popular number placement puzzle game. The objective of the game is to fill a $9\times9$ grid with 9 sets of the numbers from 1 to 9, such that each number (from 1 to 9) occurs only once every row, column and $3\times3$ sub-block. Write a simple code that correctly solves an incomplete Sudoku game.
+    \item \textbf{Brownian Motion}. Compute and plot the paths of a set of many random walkers that are confined by a pair of barriers or boundaries $\pm B$, assuming that they all start at $x=0$. Consider simulating the random walks using different boundary conditions.
+    \item \textbf{Fractal sets}. Explore and generate the stunning images of fractal sets that arise from complex dynamical systems, such as the Mandelbrot Set and filled Julia Sets.
+\end{enumerate}
+
+
+
+\end{document}
