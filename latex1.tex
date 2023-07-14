@@ -1,0 +1,1400 @@
+\documentclass[,aspectratio=169]{beamer}
+
+% ------------------------------------------------------------------------------
+% Load theme -------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+\usetheme[transitions]{ubd}
+
+\newcommand{\prevarblock}{%
+ \setbeamercolor{block title}{fg=ubdteal!30!ubdblack,bg=ubdteal!90}
+ \setbeamercolor{block body}{parent=normal text,bg=ubdteal!10,fg=ubdteal!50!ubdblack}
+}
+\newenvironment{varblock}[1]{%
+  \prevarblock
+  \vspace{0.5em}
+  \begin{block}{#1}}{\end{block}}
+
+% Information for the title page -----------------------------------------------
+\author{Drs. Haziq Jamil \& Huda Ramli}
+
+\title{SM-2302 Software for Mathematicians}
+
+\title{SM-2302 Software for Mathematicians}
+
+\subtitle{\LaTeX 1: The basics \only<handout>{\emph{[handout version]}}}
+
+\institute{Mathematical Sciences, Faculty of Science, UBD\\
+\url{https://github.com/sm2302-aug23}}
+
+\date{Semester I 2023/24}
+
+% ------------------------------------------------------------------------------
+% knitr stuff ------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{HTML}{F5F5F5}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+% ------------------------------------------------------------------------------
+% Packages ---------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+\usepackage{empheq}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,fit,arrows.meta}
+\usepackage{xltabular,longtable,booktabs,multirow,multicol,colortbl}
+
+% \usepackage{caption}
+% % Make caption package work with longtable
+% \makeatletter
+% \def\fnum@table{\tablename~\thetable}
+% \makeatother
+
+% highlight stuff using \hlc
+\usepackage{soul}
+\sethlcolor{ubdyellow}
+\makeatletter
+\let\HL\hl
+\renewcommand\hl{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color
+  \HL}
+\makeatother
+% https://tex.stackexchange.com/questions/460731/highlight-color-a-part-of-text-in-block-in-beamer
+\newcommand{\hlc}[2][ubdyellow]{{%
+    \colorlet{foo}{#1}%
+    \sethlcolor{foo}\hl{#2}}%
+}
+% https://tex.stackexchange.com/questions/352956/how-to-highlight-text-with-an-arbitrary-color
+
+% To use arabic ----------------------------------------------------------------
+% WARNING: Using arabic script causes some issues with footnotes.
+% Packages are not loaded by default
+% \usepackage{polyglossia}  
+% \setdefaultlanguage{english}
+% \setotherlanguage{arabic} % to use arabic
+% \newfontfamily\arabicfontsf[Script=Arabic]{Amiri}
+% % Note that when arabic is set, the itemize becomes triangles
+% \setbeamertemplate{itemize item}[circ]
+% \setbeamertemplate{itemize subitem}[circ]
+% \setbeamertemplate{itemize subsubitem}[circ]
+% \usepackage{xeCJK}
+% \setCJKmainfont{SimSun}
+% \setCJKsansfont{FangSong}
+% \setCJKmonofont{KaiTi}
+
+% % Fix for footnotes not showing when arabic script used
+% % https://tex.stackexchange.com/questions/228075/beamer-in-arabic-language-doesnt-accept-footnotes
+% \makeatletter
+% \let\@footnotetext=\beamer@framefootnotetext
+% \makeatother
+
+% % Fix for footnotes not showing when using \footnote<.->
+% \let\oldfootnote\footnote
+% \renewcommand{\footnote}{\only<+->\oldfootnote}
+% % https://stackoverflow.com/questions/62345074/show-footnote-only-after-a-pause-in-beamer-with-r-markdown
+
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setotherlanguage{arabic} % to use arabic
+\newfontfamily\arabicfontsf[Script=Arabic]{Amiri}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+\setbeamertemplate{itemize item}[circ]
+\setbeamertemplate{itemize subitem}[circ]
+\setbeamertemplate{itemize subsubitem}[circ]
+\usepackage{chemfig}
+\setchemfig{atom sep = 2em, bond join = true}
+\usepackage{chemmacros}
+\chemsetup{modules = {all}}
+\setbeamertemplate{caption}[numbered]
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,shadows}
+
+% Bibliography -----------------------------------------------------------------
+\usepackage[,maxcitenames=2,maxbibnames=99,backend=biber,natbib]{biblatex}
+\renewcommand*{\mkbibacro}[1]{#1}  % fix URL, DOI, ISBN, etc. font
+\addbibresource{refs.bib}
+
+% ------------------------------------------------------------------------------
+% Mathematics ------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+% coloured box around theorems etc.
+\usepackage[skins,theorems]{tcolorbox}
+\tcbset{highlight math style={enhanced,
+  colframe=ubdblue,colback=white,arc=2pt,boxrule=1pt}}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{amsmath,amssymb}
+\usepackage{dsfont}  % for indicator variables \mathsds{1}
+\usepackage{bm}  % for better bold script
+\usepackage[makeroom]{cancel}
+\usepackage{centernot}
+\renewcommand{\CancelColor}{\color{gray}}
+\newcommand{\bzero}{{\bm 0}}
+\newcommand{\bone}{{\bm 1}}
+\newcommand{\baa}{{\bm a}}
+\newcommand{\bb}{{\bm b}}
+\newcommand{\bc}{{\bm c}}
+\newcommand{\bd}{{\bm d}}
+\newcommand{\be}{{\bm e}}
+\newcommand{\bff}{{\bm f}}
+\newcommand{\bg}{{\bm g}}
+\newcommand{\bh}{{\bm h}}
+\newcommand{\bi}{{\bm i}}
+\newcommand{\bj}{{\bm j}}
+\newcommand{\bk}{{\bm k}}
+\newcommand{\bl}{{\bm l}}
+\newcommand{\bmm}{{\bm m}}
+\newcommand{\bn}{{\bm n}}
+\newcommand{\bo}{{\bm o}}
+\newcommand{\bp}{{\bm p}}
+\newcommand{\bq}{{\bm q}}
+\newcommand{\br}{{\bm r}}
+\newcommand{\bs}{{\bm s}}
+\newcommand{\bt}{{\bm t}}
+\newcommand{\bu}{{\bm u}}
+\newcommand{\bv}{{\bm v}}
+\newcommand{\bw}{{\bm w}}
+\newcommand{\bx}{{\bm x}}
+\newcommand{\by}{{\bm y}}
+\newcommand{\bz}{{\bm z}}
+\newcommand{\bA}{{\bm A}}
+\newcommand{\bB}{{\bm B}}
+\newcommand{\bC}{{\bm C}}
+\newcommand{\bD}{{\bm D}}
+\newcommand{\bE}{{\bm E}}
+\newcommand{\bF}{{\bm F}}
+\newcommand{\bG}{{\bm G}}
+\newcommand{\bH}{{\bm H}}
+\newcommand{\bI}{{\bm I}}
+\newcommand{\bJ}{{\bm J}}
+\newcommand{\bK}{{\bm K}}
+\newcommand{\bL}{{\bm L}}
+\newcommand{\bM}{{\bm M}}
+\newcommand{\bN}{{\bm N}}
+\newcommand{\bO}{{\bm O}}
+\newcommand{\bP}{{\bm P}}
+\newcommand{\bQ}{{\bm Q}}
+\newcommand{\bR}{{\bm R}}
+\newcommand{\bS}{{\bm S}}
+\newcommand{\bT}{{\bm T}}
+\newcommand{\bU}{{\bm U}}
+\newcommand{\bV}{{\bm V}}
+\newcommand{\bW}{{\bm W}}
+\newcommand{\bX}{{\bm X}}
+\newcommand{\bY}{{\bm Y}}
+\newcommand{\bZ}{{\bm Z}}
+
+% Greek bold letters
+\newcommand{\balpha}{{\bm\alpha}}
+\newcommand{\bbeta}{{\bm\beta}}
+\newcommand{\bgamma}{{\bm\gamma}}
+\newcommand{\bdelta}{{\bm\delta}}
+\newcommand{\bepsilon}{{\bm\epsilon}}
+\newcommand{\bvarepsilon}{{\bm\varepsilon}}
+\newcommand{\bzeta}{{\bm\zeta}}
+\newcommand{\bfeta}{{\bm\eta}}
+\newcommand{\boldeta}{{\bm\eta}}
+\newcommand{\btheta}{{\bm\theta}}
+\newcommand{\bvartheta}{{\bm\vartheta}}
+\newcommand{\biota}{{\bm\iota}}
+\newcommand{\bkappa}{{\bm\kappa}}
+\newcommand{\blambda}{{\bm\lambda}}
+\newcommand{\bmu}{{\bm\mu}}
+\newcommand{\bnu}{{\bm\nu}}
+\newcommand{\bxi}{{\bm\xi}}
+\newcommand{\bpi}{{\bm\pi}}
+\newcommand{\bvarpi}{{\bm\varpi}}
+\newcommand{\brho}{{\bm\rho}}
+\newcommand{\bvarrho}{{\bm\varrho}}
+\newcommand{\bsigma}{{\bm\sigma}}
+\newcommand{\bvarsigma}{{\bm\varsigma}}
+\newcommand{\btau}{{\bm\tau}}
+\newcommand{\bupsilon}{{\bm\upsilon}}
+\newcommand{\bphi}{{\bm\phi}}
+\newcommand{\bvarphi}{{\bm\varphi}}
+\newcommand{\bchi}{{\bm\chi}}
+\newcommand{\bpsi}{{\bm\psi}}
+\newcommand{\bomega}{{\bm\omega}}
+
+\newcommand{\bGamma}{{\bm\Gamma}}
+\newcommand{\bDelta}{{\bm\Delta}}
+\newcommand{\bTheta}{{\bm\Theta}}
+\newcommand{\bLambda}{{\bm\Lambda}}
+\newcommand{\bXi}{{\bm\Xi}}
+\newcommand{\bPi}{{\bm\Pi}}
+\newcommand{\bSigma}{{\bm\Sigma}}
+\newcommand{\bUpsilon}{{\bm\Upsilon}}
+\newcommand{\bPhi}{{\bm\Phi}}
+\newcommand{\bPsi}{{\bm\Psi}}
+\newcommand{\bOmega}{{\bm\Omega}}
+
+% Probability and Statistics
+\DeclareMathOperator{\Prob}{P}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\sd}{sd}
+\DeclareMathOperator{\se}{se}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Bern}{Bern}
+\DeclareMathOperator{\Dir}{Dir}
+\DeclareMathOperator{\Wis}{Wis}
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\expit}{expit}
+\DeclareMathOperator{\Mult}{Mult}
+\DeclareMathOperator{\Cat}{Cat}
+\DeclareMathOperator{\Pois}{Poi}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\NBin}{NBin}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\Betadist}{Beta}
+\DeclareMathOperator{\Hypergeom}{Hypergeom}
+\DeclareMathOperator{\Cauchy}{Cauchy}
+\DeclareMathOperator{\hCauchy}{half-Cauchy}
+\DeclareMathOperator{\LKJ}{LKJ}
+\DeclareMathOperator{\Unif}{Unif}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\ind}{\mathds{1}}
+\newcommand{\iid}{\,\overset{\text{iid}}{\sim}\,}
+\DeclareMathOperator*{\plim}{plim}
+\DeclareMathOperator{\Lik}{L}
+\DeclareMathOperator{\Leb}{Leb}
+
+% Blackboard bold
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbE}{\mathbb{E}}
+
+% Math calligraphic fonts
+\newcommand{\cA}{{\mathcal A}}
+\newcommand{\cB}{{\mathcal B}}
+\newcommand{\cC}{{\mathcal C}}
+\newcommand{\cD}{{\mathcal D}}
+\newcommand{\cE}{{\mathcal E}}
+\newcommand{\cF}{{\mathcal F}}
+\newcommand{\cG}{{\mathcal G}}
+\newcommand{\cH}{{\mathcal H}}
+\newcommand{\cI}{{\mathcal I}}
+\newcommand{\cJ}{{\mathcal J}}
+\newcommand{\cK}{{\mathcal K}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cM}{{\mathcal M}}
+\newcommand{\cN}{{\mathcal N}}
+\newcommand{\cO}{{\mathcal O}}
+\newcommand{\cP}{{\mathcal P}}
+\newcommand{\cQ}{{\mathcal Q}}
+\newcommand{\cR}{{\mathcal R}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\cU}{{\mathcal U}}
+\newcommand{\cV}{{\mathcal V}}
+\newcommand{\cW}{{\mathcal W}}
+\newcommand{\cX}{{\mathcal X}}
+\newcommand{\cY}{{\mathcal Y}}
+\newcommand{\cZ}{{\mathcal Z}}
+
+% Overbrace and underbrace
+\newcommand{\myoverbrace}[3][gray!70]{{\color{#1}\overbrace{\color{black}#2}^{#3}}}
+\newcommand{\myunderbrace}[3][gray!70]{{\color{#1}\underbrace{\color{black}#2}_{#3}}}
+
+% Conveniences
+\newcommand{\const}{\text{const.}}
+\newcommand{\half}[1][1]{\frac{#1}{2}}  % \half for 1/2 or \half[n] for n/2, etc.
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Comments gray text
+\newcommand{\mycomment}[2][10pt]{\hspace{#1}\rlap{\color{gray}\text{#2}}}
+
+% Derivatives and integration
+\let\d\relax
+\DeclareMathOperator{\dd}{d}
+\newcommand{\dint}{\dd\hspace{0.5pt}\!}
+\newcommand{\d}{\text{d}}
+
+% https://tex.stackexchange.com/questions/19981/how-to-write-rudins-symbol-for-absolute-continuity-of-measures
+\DeclareFontFamily{U}{matha}{\hyphenchar\font45}
+\DeclareFontShape{U}{matha}{m}{n}{
+  <-6> matha5 <6-7> matha6 <7-8> matha7
+  <8-9> matha8 <9-10> matha9
+  <10-12> matha10 <12-> matha12
+  }{}
+\DeclareSymbolFont{matha}{U}{matha}{m}{n}
+\DeclareMathSymbol{\Lt}{3}{matha}{"CE}
+
+\graphicspath{ {figure/} }
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+	\titlepage
+\end{frame}
+
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\begin{frame}{Why \LaTeX?}
+\protect\hypertarget{why}{}
+\vspace{-0.5em}
+
+\footnotesize
+
+\begin{center}\includegraphics[width=1\linewidth,height=0.5\textheight]{figure/kerning} \end{center}
+
+\normalsize
+
+\vspace{-0.5em}
+
+\begin{itemize}
+\item
+  It makes \href{https://nitens.org/w/latex/}{\underline{beautiful}}
+  documents (kerning, ligatures,
+  \href{https://tex.stackexchange.com/questions/110133/visual-comparison-between-latex-and-word-output-hyphenation-typesetting-ligat}{\underline{hyphenation}}).
+\item
+  Open source and active community. Lots of packages available.
+\item
+  Extensible document types (articles, presentation slides, books,
+  theses, exam papers, etc.).
+\end{itemize}
+
+\begin{alertblock}{Reminder}
+Sign up for Overleaf if you haven't done so!
+
+\end{alertblock}
+\end{frame}
+
+\hypertarget{how-does-it-work}{%
+\subsection{How does it work?}\label{how-does-it-work}}
+
+\begin{frame}[fragile]{How does it work?}
+\begin{itemize}
+\item
+  You write your document in \texttt{plain\ text} with commands that
+  describe its structure and meaning.
+\item
+  The \LaTeX~program then processes your text and commands to produce a
+  beautifully formatted document.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{The rain in Spain falls }\FunctionTok{\textbackslash{}emph}\NormalTok{\{mainly\} on the plain.}
+\end{Highlighting}
+\end{Shaded}
+
+\centering
+\vskip 1ex
+\tikz\node[single arrow,fill=gray,font=\ttfamily\bfseries,%
+  rotate=270,xshift=-1em]{latex};
+\vskip 1ex
+\begin{center}\Large
+The rain in Spain falls \emph{mainly} on the plain.
+\end{center}
+
+\blfootnote{This workshop is inspired by the \LaTeX\ course by 
+\href{https://github.com/jdleesmiller/latex-course}{JD Miller}. MIT license.}
+\end{frame}
+
+\begin{frame}[fragile]{More examples of commands and output\ldots{}}
+\protect\hypertarget{more-examples-of-commands-and-output}{}
+\vspace{-1.5em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{itemize}\NormalTok{\}}
+  \FunctionTok{\textbackslash{}item}\NormalTok{ Tea}
+  \FunctionTok{\textbackslash{}item}\NormalTok{ Milk}
+  \FunctionTok{\textbackslash{}item}\NormalTok{ Biscuits}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{itemize}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\vspace{2em}
+
+\begin{itemize}
+\item Tea
+\item Milk
+\item Biscuits
+\end{itemize}
+\end{column}
+\end{columns}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{figure}\NormalTok{\}}
+  \BuiltInTok{\textbackslash{}includegraphics}\NormalTok{\{}\ExtensionTok{gerbil}\NormalTok{\}}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{figure}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\begin{figure}
+\includegraphics{gerbil}*
+\end{figure}
+\end{column}
+\end{columns}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}
+\SpecialStringTok{y = }\SpecialCharTok{\textbackslash{}alpha}\SpecialStringTok{ + }\SpecialCharTok{\textbackslash{}beta}\SpecialStringTok{ x}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\vspace{2.5em}
+
+\begin{equation}
+y = \alpha + \beta x
+\end{equation}
+\end{column}
+\end{columns}
+
+\blfootnote{*Image license: \href{https://pixabay.com/en/animal-apple-attractive-beautiful-1239390/}{CC0}}
+\end{frame}
+
+\begin{frame}{Attitude adjustment}
+\protect\hypertarget{attitude-adjustment}{}
+\begin{itemize}
+\item
+  Use commands to describe `what it is' and not `how it looks'.
+\item
+  Focus on your content.
+\item
+  Let \LaTeX~do its job.
+\end{itemize}
+
+\footnotesize
+
+\begin{center}\includegraphics[width=1\linewidth]{figure/latexgraph-1} \end{center}
+
+\normalsize
+\end{frame}
+
+\hypertarget{showcasing}{%
+\subsection{\texorpdfstring{Showcasing
+\LaTeX}{Showcasing }}\label{showcasing}}
+
+\begin{frame}{Float placements}
+\protect\hypertarget{float-placements}{}
+\LaTeX~takes care of figure placements (``floats'') automatically.
+
+\vspace{-1em}
+
+\begin{columns}[T]
+\begin{column}{0.64\textwidth}
+\footnotesize
+
+\begin{center}\includegraphics[width=1\linewidth]{figure/piechart-1} \end{center}
+
+\normalsize
+\end{column}
+
+\begin{column}{0.33\textwidth}
+\vspace{2em}
+
+\begin{figure}
+\frame{\includegraphics[width=\linewidth]{figure/tweet_msword.pdf}}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Citations}
+\protect\hypertarget{citations}{}
+\justifying
+
+Sometimes, however, what others tell us is important as
+\emph{corroboration} of what we have already found out (or think we have
+found out) for ourselves. The Scottish philosopher Thomas Reid makes
+this point in connection with mathematical research in the belief that,
+if it applies to the science `in which, of all sciences, authority is
+acknowledged to have least weight' \cite{reid2002thomas}, it will be
+even more significant in other areas of thought and practice\ldots
+Russell, as we shall see in a later chapter, considered this aspect of
+our reliance upon testimony essential to the understanding of what it is
+to be a physical thing and he criticized logical positivism for its
+failure to appreciate the implications of this point
+\cite{russell2007logic}. In the Analysis of Matter he says explicitly,
+`I mean here by ``objective'' not anything metaphysical but merely
+``agreeing with the testimony of others''\,' \cite{russell2015analysis}.
+
+\vspace{1em}
+
+Excerpt from \emph{Testimony: A Philosophical Study} by C. A. J. Coady
+(1992)
+\end{frame}
+
+\begin{frame}{Bibliography}
+\protect\hypertarget{bibliography}{}
+\nocite{coady1992testimony} \printbibliography[heading=none]
+\end{frame}
+
+\begin{frame}{Mathematics}
+\protect\hypertarget{mathematics}{}
+For \(i=1,\dots,n\), let \begin{equation}\label{mod1}
+\begin{gathered}
+y_i = f(x_i) + \epsilon_i \\
+(\epsilon_1,\dots,\epsilon_n)^\top \sim \N_n(0, \Psi^{-1}),
+\end{gathered}
+\end{equation} where \(y_i\in\bbR\), \(x_i\in\mathcal X\), and
+\(f\in\mathcal F\) a reproducing kernel Hilbert space (RKHS) of
+functions with kernel \(h:\mathcal X \times \mathcal X \to \mathbb R\).
+
+\begin{lemma}[Fisher information for regression function]
+\label{thm:fisherinformation} For the normal model \eqref{mod1} with
+log-likelihood \(\ell\), the Fisher information for \(f\) is
+\begin{equation}
+\cI_f = -\E\nabla^2 \ell(f|y) = \sum_{i=1}^n\sum_{j=1}^n \psi_{ij}h(\cdot,x_i) \otimes h(\cdot,x_j) \label{eq:fisherinfo}
+\end{equation} where `\(\otimes\)' is the tensor product of two vectors
+in \(\mathcal F\).
+\end{lemma}
+
+The bilinear form \eqref{eq:fisherinfo} in Lemma
+\ref{thm:fisherinformation} is a consequence of variational calculus.
+\end{frame}
+
+\begin{frame}{Chemical equations}
+\protect\hypertarget{chemical-equations}{}
+\begin{figure}
+    \centering
+    \small
+    \fbox{
+    \schemestart
+        \chemname{
+            \chemfig{
+                CH
+                (-[:90]CH_2-OOC-R_1)
+                (-[:-90]CH_2-OOC-R_3)
+                -OOC-R_2
+            }
+        }{Triglyceride}
+        \+
+        \chemname{
+                \chemfig{
+                    3 ROH
+                }
+            }{Alcohol}
+        \arrow(.mid east--.mid west){<=>[Catalyst]}
+        \chemname{
+            \chemfig{
+                R_2
+                (-[:90,,,,draw=none]R_1-COO-R)
+                (-[:-90,,,,draw=none]R_3-COO-R)
+                -COO-R
+            }
+        }{Alkyl esters}
+        \+
+        \chemname{
+            \chemfig{
+                CH
+                (-[:90]CH_2-OH)
+                (-[:-90]CH_2-OH)
+                -OH
+            }
+        }{Glycerol}
+    \schemestop
+    }
+    \vspace{0.5em}
+    \caption{Transesterification of triglyceride with alcohol.}
+    \label{scm:tsester}
+\end{figure}
+
+\blfootnote{Figure \ref{scm:tsester} obtained from \url{https://tex.stackexchange.com/a/472486}}
+\end{frame}
+
+\begin{frame}{Multilingual support}
+\protect\hypertarget{multilingual-support}{}
+\vspace{-2em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\justifying
+
+\footnotesize
+
+\begin{center}\includegraphics[width=1\linewidth,height=0.45\textheight]{figure/00-aljabr} \end{center}
+
+\normalsize
+
+\textarabic{
+الْكِتَابْ الْمُخْتَصَرْ فِيْ حِسَابْ الْجَبْرْ وَالْمُقَابَلَة
+} (The Compendious Book on Calculation by Completion and Balancing),
+also known as \textarabic{الجبر} (Al-Jabr), written by \textarabic{
+محمد بن موسى الخوارزميّ
+} (Muḥammad ibn Mūsā al-Khwārizmī) around 820 CE.
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\justifying
+
+\footnotesize
+
+\begin{center}\includegraphics[width=1\linewidth,height=0.45\textheight]{figure/00-haidaosuanjing} \end{center}
+
+\normalsize
+
+海岛算经 (Hǎidǎo suàn jīng--The Sea Island Mathematical Manual) was
+written by 刘徽 (Liú Huī) ca. 200 CE. The Chinese were aware of a good
+approximation of \(\pi\approx\) \(355/113\) \(= 3.1415929204\) very
+early on (祖冲之 Zǔ Chōng Zhī, 500 CE).
+\end{column}
+\end{columns}
+\end{frame}
+
+\hypertarget{getting-started}{%
+\section{Getting started}\label{getting-started}}
+
+\begin{frame}[fragile]{Getting started}
+\framesubtitle{A minimal \LaTeX\ document}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{\textbackslash{}documentclass}\NormalTok{\{}\ExtensionTok{article}\NormalTok{\}}
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}
+\NormalTok{Hello, World!  }\CommentTok{\% your content goes here...}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\item
+  Commands start with a backslash \framebox{\texttt{\textbackslash}}.
+\item
+  Every document starts with a
+  \VERB|\BuiltInTok{\textbackslash{}documentclass}| command.
+\item
+  The \emph{argument} in curly braces \framebox{\texttt{\{}}
+  \framebox{\texttt{\}}} tells \LaTeX~what kind of document we are
+  creating (in this case, an \texttt{article}).
+\item
+  A percent sign \texttt{\%} starts a \emph{comment}--\LaTeX~will ignore
+  the rest of the line.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Getting started}
+\protect\hypertarget{getting-started-1}{}
+\vspace{-0.5em}
+
+\footnotesize
+
+\begin{center}\includegraphics[width=0.5\linewidth]{figure/overleaf} \end{center}
+
+\normalsize
+
+\begin{center}
+\url{https://www.overleaf.com/}
+
+\end{center}
+
+\begin{itemize}
+\item
+  Overleaf is a website for writing documents in \LaTeX.
+\item
+  It `compiles' your \LaTeX~document online to show you the results.
+\item
+  As we go through the following slides, try out the examples by typing
+  them into the example document on Overleaf!
+\end{itemize}
+
+\begin{varblock}{Exercise 0 (Hello world)}
+Click
+\href{https://www.overleaf.com/docs?snip_uri=https://raw.github.com//haziqj/learn-latex/main/exercises/00-hello_world/00-hello_world.tex&splash=none}{\beamerbutton{Hello World}}
+to open the ``Hello world'' document in \textbf{Overleaf} (you'll need
+to sign in first). Let's get started!
+
+\end{varblock}
+\end{frame}
+
+\begin{frame}[fragile]{Typesetting text}
+\protect\hypertarget{typesetting-text}{}
+\begin{itemize}
+\item
+  Type your text between
+  \VERB|\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}|
+  and
+  \VERB|\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}|.
+\item
+  For the most part, you can just type your text normally.
+\end{itemize}
+
+\vspace{1em}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Words are separated by one}
+\NormalTok{or more spaces.}
+
+\NormalTok{Paragraphs are separated by}
+\NormalTok{one or more blank lines.}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+Words are separated by one or more spaces.
+
+\vspace{1.2em}
+
+Paragraphs are separated by one or more blank lines.
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{itemize}
+\tightlist
+\item
+  Blank space in the source file is collaped in the output.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{The      rain    in   Spain}
+\NormalTok{falls mainly on the   plain.}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+The rain in Spain falls mainly on the plain.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Typesetting text (Caveats)}
+\protect\hypertarget{typesetting-text-caveats}{}
+\begin{itemize}
+\tightlist
+\item
+  Quotation marks are a bit tricky: Use a backtick \framebox{\texttt{`}}
+  on the left and an apostrophe \framebox{\texttt{'}} on the right.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Single quotes: \textasciigrave{}text\textquotesingle{}.}
+
+\NormalTok{Double quotes: \textasciigrave{}\textasciigrave{}text\textquotesingle{}\textquotesingle{}.}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+Single quotes: `text'.
+
+\vspace{1.2em}
+
+Double quotes: ``text''.
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{itemize}
+\item
+  Some common characters have special meanings in \LaTeX :
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \framebox{\texttt{\%}} is used to comment text
+  \item
+    \framebox{\texttt{\#}} is used for macros definitions
+  \item
+    \framebox{\texttt{\&}} is used for alignment
+  \item
+    \framebox{\texttt{\$}} is used for maths
+  \end{itemize}
+\item
+  If you just type these, you'll get an error. If you want one to appear
+  in the output, you have to \emph{escape} it by preceding it with a
+  backslash \framebox{\texttt{\textbackslash}}.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{\textbackslash{}$} \FunctionTok{\textbackslash{}\%} \FunctionTok{\textbackslash{}\&} \FunctionTok{\textbackslash{}\#}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\$ \% \& \#
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Handling errors}
+\protect\hypertarget{handling-errors}{}
+\begin{itemize}
+\item
+  \LaTeX~can get confused when it is trying to compile your document. If
+  it does, it stops with an error, which you must fix before it will
+  produce any output.
+\item
+  For example, if you misspell \VERB|\FunctionTok{\textbackslash{}emph}|
+  as \VERB|\FunctionTok{\textbackslash{}meph}|, \LaTeX~will stop with an
+  \texttt{undefined\ control\ sequence} error, because
+  \VERB|\FunctionTok{\textbackslash{}meph}| is not one of the commands
+  it knows.
+\end{itemize}
+
+\begin{block}{Advice on errors}
+
+\begin{enumerate}
+\item
+  Don't panic! Errors happen. The error messages can give a clue as to
+  what's wrong.
+\item
+  Fix them as soon as they arise--if what you just typed caused an
+  error, you can start your debugging there.
+\item
+  If there are multiple errors, start with the first one--the cause may
+  even be above it.
+\end{enumerate}
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Exercise}
+\protect\hypertarget{exercise}{}
+\begin{varblock}{Exercise 1 (Typesetting Text)}
+Typeset the following
+paragraph\footnote{\url{http://en.wikipedia.org/wiki/Economy_of_the_United_States}}
+in \LaTeX :
+
+\begin{quote}
+In March 2006, Congress raised that ceiling an additional \$0.79
+trillion to \$8.97 trillion, which is approximately 68\% of GDP. As of
+October 4, 2008, the ``Emergency Economic Stabilization Act of 2008''
+raised the current debt ceiling to \$11.3 trillion.
+\end{quote}
+
+Click
+\href{https://www.overleaf.com/docs?snip_uri=https://raw.github.com//haziqj/learn-latex/main/exercises/01-getting_started/01-getting_started.tex&splash=none}{\beamerbutton{Exercise 1}}
+to open this exercise in \textbf{Overleaf}.
+
+\end{varblock}
+
+Watch out for
+
+\begin{itemize}
+\item
+  characters with special meanings \framebox{\texttt{\%}}
+  \framebox{\texttt{\#}} \framebox{\texttt{\&}} \framebox{\texttt{\$}}
+\item
+  typesetting quotation marks correctly.
+\end{itemize}
+\end{frame}
+
+\hypertarget{mathematics-1}{%
+\section{Mathematics}\label{mathematics-1}}
+
+\hypertarget{inline-equations}{%
+\subsection{Inline equations}\label{inline-equations}}
+
+\begin{frame}[fragile]{Inline equations}
+\begin{itemize}
+\tightlist
+\item
+  Dollar signs \framebox{\texttt{\$}} are used to mark mathematics in
+  text.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\small
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\% not so good:}
+\NormalTok{Let a and b be distinct positive}
+\NormalTok{integers, and let c = a {-} b + 1.}
+
+\CommentTok{\% much better:}
+\NormalTok{Let }\SpecialStringTok{$a$}\NormalTok{ and }\SpecialStringTok{$b$}\NormalTok{ be distinct}
+\NormalTok{positive integers, and let}
+\SpecialStringTok{$c = a {-} b + 1$}\NormalTok{.}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\vspace{1em}
+
+Let a and b be distinct positive integers, and let c = a - b + 1.
+
+\hfill\break
+
+Let \(a\) and \(b\) be distinct positive integers, and let
+\(c = a - b + 1\).
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{itemize}
+\item
+  Always use dollar signs in pairs--one to \textbf{begin} and one to
+  \textbf{end}.
+\item
+  \LaTeX~handles spacing automatically; it ignores your spaces.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\small
+\vspace{-1.1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Let }\SpecialStringTok{$y=mx+c$}\NormalTok{ be }\FunctionTok{\textbackslash{}ldots}
+
+\NormalTok{Let }\SpecialStringTok{$y = m x + c$}\NormalTok{ be }\FunctionTok{\textbackslash{}ldots}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+Let \(y=mx+c\) be \ldots
+
+\vspace{1.2em}
+
+Let \(y = m x + c\) be \ldots
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{More notation}
+\protect\hypertarget{more-notation}{}
+\begin{itemize}
+\tightlist
+\item
+  Use caret/hat \framebox{\ \texttt{\^}} for superscripts and underscore
+  \framebox{$\vphantom{a}$\texttt{\_}} for subscripts.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\small
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\SpecialStringTok{$y = c\_2 x\^{}2 + c\_1 x + c\_0$}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.38\textwidth}
+\(y = c_2 x^2 + c_1 x + c_0\)
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{itemize}
+\tightlist
+\item
+  Use curly braces \framebox{\texttt{\{}} \framebox{\texttt{\}}} to
+  group supers/sub scripts.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\small
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\% oops!}
+\SpecialStringTok{$F\_n = F\_n{-}1 + F\_n{-}2$}
+
+\CommentTok{\% ok!}
+\SpecialStringTok{$F\_n = F\_\{n{-}1\} + F\_\{n{-}2\}$}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.38\textwidth}
+\vspace{1em}
+
+\(F_n = F_n-1 + F_n-2\)
+
+\vspace{2em}
+
+\(F_n = F_{n-1} + F_{n-2}\)
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{itemize}
+\tightlist
+\item
+  There are commands for Greek letters and common notation.
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\small
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\SpecialStringTok{$}\SpecialCharTok{\textbackslash{}mu}\SpecialStringTok{ = A e\^{}\{Q/RT\}$}
+
+\SpecialStringTok{$}\SpecialCharTok{\textbackslash{}Omega}\SpecialStringTok{ = }\SpecialCharTok{\textbackslash{}sum}\SpecialStringTok{\_\{k=1\}\^{}\{n\} }\SpecialCharTok{\textbackslash{}omega}\SpecialStringTok{\_k$}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.38\textwidth}
+\(\mu = A e^{Q/RT}\)
+
+\vspace{1em}
+
+\(\Omega = \sum_{k=1}^{n} \omega_k\)
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Detexify}
+\protect\hypertarget{detexify}{}
+\centering
+\vspace{-0.5em}
+
+\href{https://detexify.kirelabs.org/classify.html}{\includegraphics{figure/detexify.png}}
+\end{frame}
+
+\hypertarget{displayed-equations}{%
+\subsection{Displayed equations}\label{displayed-equations}}
+
+\begin{frame}[fragile]{Displayed equations}
+\begin{itemize}
+\tightlist
+\item
+  If the mathematics is big and scary, \emph{display} it on its own line
+  using
+  \VERB|\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}|
+  and
+  \VERB|\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}|
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\small
+\vspace{-1.1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{The roots of a quadratic equation are}
+\NormalTok{given by}
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}
+\SpecialStringTok{x = }\SpecialCharTok{\textbackslash{}frac}\SpecialStringTok{\{{-}b }\SpecialCharTok{\textbackslash{}pm}\SpecialStringTok{ }\SpecialCharTok{\textbackslash{}sqrt}\SpecialStringTok{\{b\^{}2 {-} 4ac\}\}}
+\SpecialStringTok{         \{2a\}}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{equation}\NormalTok{\}}
+\NormalTok{where }\SpecialStringTok{$a$}\NormalTok{, }\SpecialStringTok{$b$}\NormalTok{ and }\SpecialStringTok{$c$}\NormalTok{ are }\FunctionTok{\textbackslash{}ldots}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.38\textwidth}
+The roots of a quadratic equation are given by \begin{equation}
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}
+{2a} \end{equation} where \(a\), \(b\) and \(c\) are \ldots
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+
+\begin{alertblock}{Caution}
+\LaTeX~mostly ignores your spaces in mathematics, but it can't handle
+blank lines in equations--don't put blank lines in your mathematics.
+
+\end{alertblock}
+\end{frame}
+
+\hypertarget{interlude-environments}{%
+\subsection{Interlude: Environments}\label{interlude-environments}}
+
+\begin{frame}[fragile]{Interlude: Environments}
+\begin{itemize}
+\item
+  \texttt{equation} is an \emph{environment} (a context).
+\item
+  The \VERB|\KeywordTok{\textbackslash{}begin}| and
+  \VERB|\KeywordTok{\textbackslash{}end}| commands are used to create
+  many different environments. E.g., \texttt{itemize} and
+  \texttt{enumerate} for lists:
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+\small
+\vspace{-1em}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{itemize}\NormalTok{\} }\CommentTok{\% for bullet points}
+\FunctionTok{\textbackslash{}item}\NormalTok{ Biscuits}
+\FunctionTok{\textbackslash{}item}\NormalTok{ Tea}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{itemize}\NormalTok{\}}
+
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{enumerate}\NormalTok{\} }\CommentTok{\% for numbers}
+\FunctionTok{\textbackslash{}item}\NormalTok{ Biscuits}
+\FunctionTok{\textbackslash{}item}\NormalTok{ Tea}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{enumerate}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{column}
+
+\begin{column}{0.38\textwidth}
+\vspace{1em}
+
+\begin{itemize}
+\tightlist
+\item
+  Biscuits
+\item
+  Tea
+\end{itemize}
+
+\vspace{2.5em}
+
+\begin{enumerate}
+\tightlist
+\item
+  Biscuits
+\item
+  Tea
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\hypertarget{interlude-packages}{%
+\subsection{Interlude: Packages}\label{interlude-packages}}
+
+\begin{frame}[fragile]{Interlude: Packages}
+\begin{itemize}
+\item
+  All of the commands and environments we've used so far are built into
+  \LaTeX .
+\item
+  \emph{Packages} are libraries of extra commands and evironments. There
+  are thousands of freely available packages.
+\item
+  We have to load each package we want to use with a
+  \VERB|\BuiltInTok{\textbackslash{}usepackage}| commands in the
+  \emph{preamble}.
+\item
+  Example: \texttt{amsmath} from the American Mathematical Society.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{\textbackslash{}documentclass}\NormalTok{\{}\ExtensionTok{article}\NormalTok{\}}
+\BuiltInTok{\textbackslash{}usepackage}\NormalTok{\{}\ExtensionTok{amsmath}\NormalTok{\} }\CommentTok{\% preamble}
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}
+\CommentTok{\% now we can use commands from amsmath here...}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{document}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{An example with \texttt{amsmath}}
+\protect\hypertarget{an-example-with-amsmath}{}
+\begin{itemize}
+\tightlist
+\item
+  Align a sequence of equations at the equals sign \begin{align*}
+  (x+1)^3 &= (x+1)(x+1)(x+1) \\
+        &= (x+1)(x^2 + 2x + 1) \\
+        &= x^3 + 3x^2 + 3x + 1
+  \end{align*} with the \texttt{align*} environment.
+\end{itemize}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{\textbackslash{}begin}\NormalTok{\{}\ExtensionTok{align*}\NormalTok{\}}
+\SpecialStringTok{(x+1)\^{}3 \&= (x+1)(x+1)(x+1) }\SpecialCharTok{\textbackslash{}\textbackslash{}}
+\SpecialStringTok{        \&= (x+1)(x\^{}2 + 2x + 1) }\SpecialCharTok{\textbackslash{}\textbackslash{}}
+\SpecialStringTok{        \&= x\^{}3 + 3x\^{}2 + 3x + 1}
+\KeywordTok{\textbackslash{}end}\NormalTok{\{}\ExtensionTok{align*}\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\begin{itemize}
+\item
+  An ampersand \framebox{\texttt{\&}} separates the left column (before
+  the `\(=\)') from the right column (after the `\(=\)').
+\item
+  A double backslash \framebox{\texttt{\textbackslash\textbackslash}}
+  starts a new line.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exercise}
+\protect\hypertarget{exercise-1}{}
+\begin{varblock}{Exercise 2 (Maths)}
+Typeset the following paragraph in \LaTeX :
+
+\begin{quote}
+Let \(X_1, X_2, \dots, X_n\) be a sequence of independent and
+identically distributed random variables with mean \(\mu\) and variance
+\(\sigma^2 < \infty\), and let \begin{equation}
+S_n = \frac{1}{n}\sum_{i=1}^{n} X_i
+\end{equation} denote their mean. Then as \(n\) approaches infinity, the
+random variables \(\sqrt{n}(S_n - \mu)\) converge in distribution to a
+normal \(N(0, \sigma^2)\).
+\end{quote}
+
+Click
+\href{https://www.overleaf.com/docs?snip_uri=https://raw.github.com//haziqj/learn-latex/main/exercises/02-mathematics/02-mathematics.tex&splash=none}{\beamerbutton{Exercise 2}}
+to open this exercise in \textbf{Overleaf}.
+
+\end{varblock}
+\end{frame}
+
+\hypertarget{wrap-up}{%
+\section{Wrap-up}\label{wrap-up}}
+
+\begin{frame}{Wrap-up}
+\begin{center}
+\begin{tikzpicture}
+\node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=0.7\textheight]{figure/confetti.png}};
+\node[align=center,black,font={\Huge}] at (image.center) {CONGRATS!};
+\end{tikzpicture}
+\end{center}
+
+You have now learned how to\ldots{}
+
+\begin{itemize}
+\tightlist
+\item
+  Typeset text in \LaTeX
+\item
+  Use lots of different commands
+\item
+  Typeset some beautiful mathematics
+\item
+  Use several different environments (figures, tables, lists).
+\item
+  Load packages
+\end{itemize}
+
+Next time, we'll see how to use \LaTeX to write structured documents
+with sections, cross references, figures, tables and bibliographies.
+\end{frame}
+
+
+
+
+\end{document}		

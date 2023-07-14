@@ -5,6 +5,15 @@
 % ------------------------------------------------------------------------------
 \usetheme[$if(progressdots)$progressdots,$endif$$if(transitions)$transitions$endif$]{ubd}
 
+\newcommand{\prevarblock}{%
+ \setbeamercolor{block title}{fg=ubdteal!30!ubdblack,bg=ubdteal!90}
+ \setbeamercolor{block body}{parent=normal text,bg=ubdteal!10,fg=ubdteal!50!ubdblack}
+}
+\newenvironment{varblock}[1]{%
+  \prevarblock
+  \vspace{0.5em}
+  \begin{block}{#1}}{\end{block}}
+
 % Information for the title page -----------------------------------------------
 $if(author)$
 \author{$author$}
@@ -153,6 +162,10 @@ $endif$
 % \renewcommand{\footnote}{\only<+->\oldfootnote}
 % % https://stackoverflow.com/questions/62345074/show-footnote-only-after-a-pause-in-beamer-with-r-markdown
 
+$for(header-includes)$
+$header-includes$
+$endfor$
+
 % Bibliography -----------------------------------------------------------------
 $if(bibliography)$
 \usepackage[$if(bibstyle)$style=$bibstyle$$endif$,maxcitenames=2,maxbibnames=99,backend=biber,natbib]{biblatex}
@@ -183,7 +196,7 @@ $endfor$
 \renewcommand{\CancelColor}{\color{gray}}
 \newcommand{\bzero}{{\bm 0}}
 \newcommand{\bone}{{\bm 1}}
-\newcommand{\ba}{{\bm a}}
+\newcommand{\baa}{{\bm a}}
 \newcommand{\bb}{{\bm b}}
 \newcommand{\bc}{{\bm c}}
 \newcommand{\bd}{{\bm d}}
@@ -383,10 +396,6 @@ $endfor$
   }{}
 \DeclareSymbolFont{matha}{U}{matha}{m}{n}
 \DeclareMathSymbol{\Lt}{3}{matha}{"CE}
-
-$for(header-includes)$
-$header-includes$
-$endfor$
 
 \graphicspath{ {figure/} }
 
