@@ -243,7 +243,7 @@ Week & Topic & Instructor & Assessment\\
 
 ```{r studentperfdata, include = FALSE}
 plot.df <- readxl::read_excel("../Syllabus/sm2302data.xlsx")
-plot.df$Grade <- factor(plot.df$Grade, levels = c("A+", "A", "B+", "B", "C+", "C", "D+", "D", "P", "F"))
+plot.df$Grade <- factor(plot.df$Grade, levels = rev(c("A+", "A", "B+", "B", "C+", "C", "D+", "D", "P", "F")))
 
 # Average class size
 plot.df %>% group_by(Year) %>% summarise(n = n()) -> tmp
@@ -253,7 +253,7 @@ avg.class.size <- mean(tmp$n)
 tmp1 <- table(subset(plot.df, Year == "2022S1")$Grade)
 latest.class <- tibble(Grade = names(tmp1), prop = tmp1 / sum(tmp1)) 
 latest.class$Grade <- factor(latest.class$Grade, 
-                             levels = c("A+", "A", "B+", "B", "C+", "C", "D+", "D", "P", "F"))
+                             levels = rev(c("A+", "A", "B+", "B", "C+", "C", "D+", "D", "P", "F")))
 ```
 
 ```{r studentperf, echo = FALSE,  fig.align = "center", fig.height = 2.7, fig.width = 7, out.width = "0.9\\textwidth"}
