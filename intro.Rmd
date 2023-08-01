@@ -88,7 +88,7 @@ mycol <- c("#30123BFF", "#4777EFFF", "#1BD0D5FF", "#62FC6BFF", "#D2E935FF",
 
 ### Admin
 
-- Lecturer information
+- Instructor information
 
 \vspace{-1.5em}
 
@@ -279,7 +279,7 @@ ggplot(plot.df) +
 
 - Any recycled code that is discovered and is not explicitly cited will be treated as plagiarism, regardless of source.
 
-- The use of AI tools (including but not limited to ChatGPT) to produce solutions to any assignments is **prohibited**, and if caught using will be treated as plagiarism.
+- The use of AI tools (including but not limited to ChatGPT) to produce solutions to any assignments is [**prohibited**]{.ul}, and if caught using will be treated as plagiarism.
 
 ### Plagiarism
 
