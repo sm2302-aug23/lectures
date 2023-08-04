@@ -38,8 +38,8 @@ Alternatively, type `RStudio` in the Windows Run prompt.
 By local, we mean that you are using your own laptop or computer.
 You need to ensure that you have done the following:
 
-- Install the latest version of R (4.2.1 as of 2022-06-23)
-- Install the latest version of RStudio Desktop (2022.07.0+548 as of 2022-07-17)
+- Install the latest version of R (4.3.1 as of 2023-06-16)
+- Install the latest version of RStudio Desktop (2023.06.1+524  as of 2022-07-07)
 - Install the list of recommended R packages from CRAN
 
 Note that you do need to install two things here: R and RStudio Desktop.
