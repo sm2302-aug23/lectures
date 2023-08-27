@@ -69,6 +69,7 @@ library(ggpubr)
 library(cowplot)
 library(ggrepel)
 library(ggforce)
+library(EDAWR)
 
 ubdblue <- "#325494"
 ubdteal <- "#58DDB3"
@@ -84,6 +85,8 @@ mycol <- c("#30123BFF", "#4777EFFF", "#1BD0D5FF", "#62FC6BFF", "#D2E935FF",
 
 ### Preamble
 
+\vspace{-1em}
+
 ```{r, eval = FALSE}
 # If not installed yet, install them first
 library(tidyverse)
@@ -96,7 +99,7 @@ library(EDAWR)  # to get the data sets: storms, cases, pollution, tb
 
 \small
 
-Note that installing EDAWR package may require compilation.
+Note that installing `{EDAWR}` package may require compilation.
 For Windows, check out [Rtools42](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html). 
 For Macs, I think minimally you will need to install Xcode.
 Check out this [link](https://mac.r-project.org/tools/).
@@ -134,7 +137,7 @@ I would recommend that you watch them, but note that the video is based on the o
 
 - Join multiple data sets together
 
-  - `left_join()`, `right_join()`, `inner_join()`, `full_join()`
+  - `bind_cols()`, `bind_rows()`, `left_join()` and other `*_join()`
 
 ### The `tidyverse` package
 
@@ -142,7 +145,9 @@ I would recommend that you watch them, but note that the video is based on the o
 
 :::: {.column width=48%}
 The [`tidyverse`](https://www.tidyverse.org/packages/) is a collection of R packages designed for data science.
-We're most interested in the following packages:
+Today we're most interested in the following packages:
+
+\vspace{1em}
 
 1. `tibble`
 
@@ -166,6 +171,51 @@ knitr::include_graphics("figure/tidyverse.png")
 ::::
 
 :::
+
+### Tibbles: Modern data frames
+
+\vspace{-1em}
+
+```{r echo=1}
+library(tibble)
+options(width=50)
+```
+
+\vspace{-2em}
+
+:::: {.columns}
+
+::: {.column width=49%}
+```{r, echo}
+iris
+```
+:::
+
+::: {.column width=49%}
+```{r, echo = 1}
+(tbl_iris <- as_tibble(iris))
+```
+:::
+
+::::
+
+### Tibbles: Modern data frames (cont.)
+
+Some features of `tibbles`:
+
+1. An ehanced `print()` method, making it easier to use with large data sets containing complex objects.
+
+2. They are lazy
+
+   - Subsetting results in another `tibble` (does not `drop` dimensions).
+   - Partial matching does not work--you need to type the full variable name.
+   - `stringsAsFactors = FALSE` by default (for character data).
+   - Only vectors of length 1 will undergo length coercion.
+  
+3. They are surly (complains more!)
+  - Forces you to confront problems earlier, leading to cleaner and more expressive code.
+
+Additional reading: https://r4ds.had.co.nz/tibbles.html 
 
 ### TL;DR--Use the cheat sheet!
 
@@ -203,6 +253,8 @@ Let's have a look at three data sets:
 
 :::: {.column width=55%}
 
+\vspace{-1em}
+
 ```{r}
 EDAWR::storms
 ```
@@ -238,6 +290,8 @@ Extracting data by subsetting easily:
 
 \framesubtitle{Wide format}
 
+\vspace{-2em}
+
 ::: {.columns}
 
 :::: {.column width=48%}
@@ -255,8 +309,6 @@ EDAWR::cases
 ::::
 
 :::: {.column width=48%}
-
-\vspace{-2em}
 
 ```{r, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("figure/cases.png")
@@ -280,7 +332,7 @@ Extracting data by subsetting (not so easy):
 
 :::: {.column width=48%}
 
-\vspace{-1em}
+\vspace{-1.5em}
 
 ```{r}
 EDAWR::pollution
@@ -288,8 +340,7 @@ EDAWR::pollution
 
 - Variables: `city`, `amount`
 - Observations: 1, 2, 3, 4, 5, 6
-- Notice that
-   - Amount of particles for each city is segregated into two groups: large and small.
+- Notice that `amount` for each city is segregated into two groups: `large` and `small`.
 
 ::::
 
@@ -326,7 +377,9 @@ knitr::include_graphics(c("figure/tidy1.png",
                           "figure/tidy3.png"))
 ```
 
-# Getting tidy data
+
+
+# Getting tidy data (reshaping)
 
 There are two main functions that we will use to reshape the layout of tables:
 
@@ -337,6 +390,8 @@ To a lesser degree, these utility functions may be useful too:
 
 1. `separate()`
 2. `unite()`
+3. `arrange()`
+4. `rename()`
 
 ## `pivot_longer()`
 
@@ -348,6 +403,8 @@ knitr::include_graphics("figure/pivot_longer.pdf")
 ```
 
 ### `pivot_longer()` (cont.)
+
+\vspace{-1em}
 
 ::: {.columns}
 
@@ -391,7 +448,9 @@ In the `pollution` data set, we could instead have a table of city by particle s
 knitr::include_graphics("figure/pivot_wider.pdf")
 ```
 
-### `pivot_longer()` (cont.)
+### `pivot_wider()` (cont.)
+
+\vspace{-1em}
 
 ::: {.columns}
 
@@ -485,6 +544,117 @@ unite(data = storms2,
 
 :::
 
+## `arrange()` 
+
+Sorting rows (in ascending order) in a particular column is done using `arrange()`.
+
+
+::: {.columns}
+
+:::: {.column width=48%}
+
+```{r}
+# Before
+storms
+```
+
+::::
+
+:::: {.column width=48%}
+
+```{r}
+# After
+arrange(.data = storms, wind)
+```
+
+::::
+
+:::
+
+
+### `arrange()` (cont.)
+
+Sorting rows (in descending order) in a particular column is done by applying `desc()` on the variable.
+
+
+::: {.columns}
+
+:::: {.column width=48%}
+
+```{r}
+# Before
+storms
+```
+
+::::
+
+:::: {.column width=48%}
+
+```{r}
+# After
+arrange(.data = storms, desc(wind))
+```
+
+::::
+
+:::
+
+
+### `arrange()` (cont.)
+
+You may arrange by multiple columns in order.
+
+
+::: {.columns}
+
+:::: {.column width=48%}
+
+```{r}
+# Before
+storms
+```
+
+::::
+
+:::: {.column width=48%}
+
+```{r}
+# After
+arrange(.data = storms, wind, date)
+```
+
+::::
+
+:::
+
+## `rename()`
+
+A utility function to rename the columns.
+
+
+::: {.columns}
+
+:::: {.column width=48%}
+
+```{r}
+# Before
+storms
+```
+
+::::
+
+:::: {.column width=48%}
+
+```{r}
+# After
+rename(.data = storms, 
+       WIND = wind,
+       Storm = storm)
+```
+
+::::
+
+:::
 
 # Data wrangling
 
@@ -506,9 +676,15 @@ Having obtained a tidy dataset, there are several ways to \underline{access} inf
 
    - `summarise()`
 
+Notice that these functions are *verbs* (action words). 
+There are many more, of course.
+Read more: https://dplyr.tidyverse.org/articles/programming.html 
+
 ## `select()`
 
 Select variables in a data frame.
+
+\vspace{-1em}
 
 ::: {.columns}
 
@@ -806,7 +982,7 @@ Using `dplyr`'s `mutate()` function, we are able to do this easily without havin
 
 ::: {.columns}
 
-:::: {.column width=48%}
+:::: {.column width=43%}
 
 ```{r}
 # Before
@@ -815,7 +991,7 @@ storms
 
 ::::
 
-:::: {.column width=48%}
+:::: {.column width=53%}
 
 ```{r}
 # After
@@ -834,7 +1010,8 @@ Just separate them by commas.
 
 
 
-```{r}
+```{r, echo = -1}
+options(width = 80)
 mutate(.data = storms, 
        ratio = pressure / wind,
        inverse = ratio ^ (-1))
@@ -927,92 +1104,10 @@ knitr::include_graphics(c("figure/agg.pdf", "figure/window.pdf"))
 
 - Functions used with `mutate()` should keep the vector length.
 
-## `arrange()` 
-
-Sorting rows (in ascending order) in a particular column is done using `arrange()`.
-
-
-::: {.columns}
-
-:::: {.column width=48%}
-
-```{r}
-# Before
-storms
-```
-
-::::
-
-:::: {.column width=48%}
-
-```{r}
-# After
-arrange(.data = storms, wind)
-```
-
-::::
-
-:::
-
-
-### `arrange()` (cont.)
-
-Sorting rows (in descending order) in a particular column is done by applying `desc()` on the variable.
-
-
-::: {.columns}
-
-:::: {.column width=48%}
-
-```{r}
-# Before
-storms
-```
-
-::::
-
-:::: {.column width=48%}
-
-```{r}
-# After
-arrange(.data = storms, desc(wind))
-```
-
-::::
-
-:::
-
-
-### `arrange()` (cont.)
-
-You may arrange by multiple columns in order.
-
-
-::: {.columns}
-
-:::: {.column width=48%}
-
-```{r}
-# Before
-storms
-```
-
-::::
-
-:::: {.column width=48%}
-
-```{r}
-# After
-arrange(.data = storms, wind, date)
-```
-
-::::
-
-:::
 
 # Pipeline
 
-Consider the following sequence of actions that describe the process of getting to campus in the morning:
+Consider the following sequence of actions that describe the process of getting to UBD campus everyday:
 
 > I need to find my key, then unlock my car, then start my car, then drive to school, then park.
 
@@ -1202,15 +1297,15 @@ Here are the functions useful for combining data sets
 3. `*_join()` commands
 4. Other set operation functions such as `union()`, `intersect()`, and `setdiff()`
 
-For more details on these functions, please have a look at https://github.com/gadenbuie/tidyexplain--This page contains a helpful information about what the join functions do.
+For more details on these functions, please have a look at https://github.com/gadenbuie/tidyexplain -- This page contains a helpful information about what the join functions do.
 
 ## `bind_cols()`
 
 If you have two or more data frames (or columns) that are \underline{meant} to go together column-wise, then use `bind_cols()`.
 
 ```{r}
-x <- storms[, 1:3]  # First 3 columns of storms
-y <- storms$date  # The last column of storms
+x <- select(storms, 1:3)  # First 3 columns of storms
+y <- select(storms, date)  # The last column of storms
 bind_cols(x, y)
 ```
 
@@ -1220,8 +1315,8 @@ bind_cols(x, y)
 Similarly if you wanted to stack two or more data frameson top of each other, then use `bind_rows()`.
 
 ```{r}
-x <- storms[1:3, ]  # First 3 columns of storms
-y <- storms[4:6, ]  # Last 3 columns of storms
+x <- storms[1:3, ]  # First 3 rows of storms
+y <- storms[4:6, ]  # Last 3 rows of storms
 bind_rows(x, y)
 ```
 
