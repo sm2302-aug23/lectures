@@ -63,7 +63,7 @@ knitr::opts_chunk$set(
 )
 options(width = 85)  # if 4:3 set to 55; if 16:9 set to 70
 library(tidyverse)
-theme_set(theme_classic())
+theme_set(theme_bw())
 library(tidyverse)
 library(ggpubr)
 library(cowplot)
@@ -157,6 +157,9 @@ Measurements for penguin species, island in Palmer Archipelago, size (flipper le
 :::: {.columns}
 
 ::: {.column width=32%}
+
+\vspace{-1em}
+
 ```{r echo=FALSE, out.width="100%"}
 knitr::include_graphics("figure/penguins.png")
 ```
@@ -177,6 +180,8 @@ options(width = 85)
 ::::
 
 ### A basic ggplot
+
+\vspace{-2em}
 
 :::: {.columns}
 
@@ -241,14 +246,12 @@ ggplot(data = penguins)
 
 Start with the `penguins` data frame, **map bill depth to the x-axis**
 
-\vspace{1em}
-
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-1, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm) 
 )
 ```
@@ -267,14 +270,12 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, **and map bill length to the y-axis.**
 
-\vspace{1em}
-
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-2, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) 
@@ -294,14 +295,12 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. **Represent each observation with a point**
 
-\vspace{1em}
-
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-3, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -310,7 +309,7 @@ ggplot(
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-3", echo = FALSE, warning = FALSE}
+```{r ref.label = "penguins-3", echo = FALSE, warning = FALSE, fig.height = 4.7}
 ```
 :::
 
@@ -321,16 +320,14 @@ ggplot(
 
 \footnotesize
 
-Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point **and map species to the color of each point.**
-
-\vspace{1em}
+Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point **and map species to the colour of each point.**
 
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-4, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -341,7 +338,7 @@ ggplot(
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-4", echo = FALSE, warning = FALSE}
+```{r ref.label = "penguins-4", echo = FALSE, warning = FALSE, fig.height = 4.7}
 ```
 :::
 
@@ -353,14 +350,14 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point and map species to the color of each point. **Title the plot "Bill depth and length"**
 
-\vspace{1em}
+\vspace{-0.5em}
 
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-5, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -372,7 +369,7 @@ ggplot(
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-5", echo = FALSE, warning = FALSE, fig.height = 4.8}
+```{r ref.label = "penguins-5", echo = FALSE, warning = FALSE, fig.height = 4.5}
 ```
 :::
 
@@ -385,14 +382,14 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point and map species to the color of each point. Title the plot "Bill depth and length" **and add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins"**
 
-\vspace{1em}
+\vspace{-0.5em}
 
 :::: {.columns}
 
 ::: {.column width=49%}
 ```{r penguins-6, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -400,7 +397,7 @@ ggplot(
     mapping = aes(colour = species)
   ) +
   labs(
-    title = "Bill depth and length",
+    title    = "Bill depth and length",
     subtitle = paste("Dimensions for Adelie,",
                      "Chinstrap, and Gentoo", 
                      "Penguins")
@@ -421,15 +418,15 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point and map species to the color of each point. Title the plot "Bill depth and length" **label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively**
 
-\vspace{1em}
+\vspace{-0.5em}
 
 :::: {.columns}
 
 ::: {.column width=49%}
-\vspace{-0.5em}
+
 ```{r penguins-7, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -437,27 +434,22 @@ ggplot(
     mapping = aes(colour = species)
   ) +
   labs(
-    title = "Bill depth and length",
+    title    = "Bill depth and length",
     subtitle = paste("Dimensions for Adelie,",
                      "Chinstrap, and Gentoo", 
                      "Penguins"),
-    x = "Bill depth (mm)",
-    y = "Bill length (mm)"
+    x        = "Bill depth (mm)",
+    y        = "Bill length (mm)"
   )
 ```
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-7", echo = FALSE, warning = FALSE, fig.height = 4.8}
+```{r ref.label = "penguins-7", echo = FALSE, warning = FALSE, fig.height = 4.5}
 ```
 :::
 
 ::::
-
-
-
-
-
 
 ###
 
@@ -465,15 +457,15 @@ ggplot(
 
 Start with the `penguins` data frame, map bill depth to the x-axis, and map bill length to the y-axis. Represent each observation with a point and map species to the color of each point. Title the plot "Bill depth and length" label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively. **Label the legend "Species"**
 
-\vspace{1em}
+\vspace{-1em}
 
 :::: {.columns}
 
 ::: {.column width=49%}
-\vspace{-1em}
+
 ```{r penguins-8, fig.show = "hide", warning = FALSE}
 ggplot(
-  data = penguins,
+  data    = penguins,
   mapping = aes(x = bill_depth_mm,
                 y = bill_length_mm) 
 ) +
@@ -481,19 +473,20 @@ ggplot(
     mapping = aes(colour = species)
   ) +
   labs(
-    title = "Bill depth and length",
+    title    = "Bill depth and length",
     subtitle = paste("Dimensions for Adelie,",
                      "Chinstrap, and Gentoo", 
                      "Penguins"),
-    x = "Bill depth (mm)",
-    y = "Bill length (mm)",
-    colour = "Species"
+    x        = "Bill depth (mm)",
+    y        = "Bill length (mm)",
+    colour   = "Species"
   )
 ```
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-8", echo = FALSE, warning = FALSE, fig.height = 4.8}
+
+```{r ref.label = "penguins-8", echo = FALSE, warning = FALSE, fig.height = 4.6}
 ```
 :::
 
@@ -510,30 +503,29 @@ Start with the `penguins` data frame, map bill depth to the x-axis, and map bill
 :::: {.columns}
 
 ::: {.column width=49%}
-\vspace{-1em}
+
 ```{r penguins-9, fig.show = "hide", warning = FALSE}
-ggplot(
-  data = penguins,
-  mapping = aes(x = bill_depth_mm,
-                y = bill_length_mm) 
-) +
-  geom_point(
-    mapping = aes(colour = species)
-  ) +
+ggplot(penguins, aes(x = bill_depth_mm,
+                     y = bill_length_mm)) +
+  geom_point(aes(colour = species)) +
   labs(
-    title = "Bill depth and length",
+    title    = "Bill depth and length",
     subtitle = paste("Dimensions for Adelie,",
                      "Chinstrap, and Gentoo", 
                      "Penguins"),
-    x = "Bill depth (mm)", y = "Bill length (mm)",
-    colour = "Species",
-    caption = "Source: palmerpenguins package" 
+    x        = "Bill depth (mm)", 
+    y        = "Bill length (mm)",
+    colour   = "Species",
+    caption  = "Source: palmerpenguins package" 
   )
 ```
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "penguins-9", echo = FALSE, warning = FALSE, fig.height = 4.8}
+
+\vspace{-1.5em}
+
+```{r ref.label = "penguins-9", echo = FALSE, warning = FALSE, fig.height = 4.7}
 ```
 :::
 
@@ -595,6 +587,9 @@ Different geometries have different aesthetics that can be used - see the [ggplo
 
 ### Colour
 
+Mapping `species` to a unique colour.
+
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -607,7 +602,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "colour", echo = FALSE, warning = FALSE, fig.height = 4.8}
+```{r ref.label = "colour", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -616,8 +611,9 @@ ggplot(penguins, aes(x = bill_depth_mm,
 
 ### Shape
 
-Mapped to a different variable than `colour`
+Mapping an additional variable (`island` to shape).
 
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -632,7 +628,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "shapeisland", echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "shapeisland", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -642,8 +638,9 @@ ggplot(penguins, aes(x = bill_depth_mm,
 
 ### Shape (cont.)
 
-Mapped to same variable as `colour`
+Mapped to same variable `species` to **both** shape and colour.
 
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -658,7 +655,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "shapespecies", echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "shapespecies", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -668,6 +665,8 @@ ggplot(penguins, aes(x = bill_depth_mm,
 
 Control the size of the points. 
 Note that this is a fixed value (outside of the `aes` call).
+
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -683,7 +682,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "size1", echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "size1", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -693,6 +692,8 @@ ggplot(penguins, aes(x = bill_depth_mm,
 ### Size (cont.)
 
 Mapping the size aesthetic to a variable.
+
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -708,7 +709,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "size2", echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "size2", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -718,6 +719,8 @@ ggplot(penguins, aes(x = bill_depth_mm,
 ### Alpha
 
 Mapping the transparency aesthetic to a variable.
+
+\vspace{-0.5em}
 
 :::: {.columns}
 
@@ -734,7 +737,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "alpha", echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "alpha", echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -760,27 +763,14 @@ From the previous slide `color`, `shape`, and `alpha` are all **aesthetics** whi
 
 - Useful for exploring conditional relationships and large data
 
-
-\vspace{0.5em}
+\vspace{-1em}
 
 :::: {.columns}
 
-::: {.column width=49%}
-```{r, warning = FALSE, echo = FALSE, fig.height = 4.2}
-ggplot(
-  penguins, 
-  aes(
-    x = bill_depth_mm, 
-    y = bill_length_mm
-  )
-) + 
-  geom_point() +
-  facet_grid( species ~ island ) 
-```
-:::
+
 
 ::: {.column width=49%}
-```{r, warning = FALSE, echo = FALSE, fig.height = 4.2}
+```{r, warning = FALSE, echo = FALSE, fig.height = 4.1}
 ggplot(
   penguins, 
   aes(
@@ -798,9 +788,25 @@ ggplot(
 ```
 :::
 
+::: {.column width=49%}
+```{r, warning = FALSE, echo = FALSE, fig.height = 4.1}
+ggplot(
+  penguins, 
+  aes(
+    x = bill_depth_mm, 
+    y = bill_length_mm
+  )
+) + 
+  geom_point() +
+  facet_grid( species ~ island ) 
+```
+:::
+
 ::::
 
 ### `facet_grid()` columns
+
+\vspace{-1em}
 
 :::: {.columns}
 
@@ -822,6 +828,8 @@ ggplot(penguins, aes(x = bill_depth_mm,
 ::::
 
 ### `facet_grid()` rows
+
+\vspace{-1em}
 
 :::: {.columns}
 
@@ -846,6 +854,8 @@ ggplot(penguins, aes(x = bill_depth_mm,
 
 ### `facet_grid()` both rows and columns
 
+\vspace{-1em}
+
 :::: {.columns}
 
 ::: {.column width=49%}
@@ -867,6 +877,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 
 ### Faceting and color
 
+\vspace{-1em}
 
 :::: {.columns}
 
@@ -1070,8 +1081,7 @@ ggplot(
 :::: {.columns}
 
 ::: {.column width=49%}
-
-```{r boxplot1, warning = FALSE, fig.height = 4.1}
+```{r boxplot1, warning = FALSE, fig.height = 3.8}
 ggplot(penguins, aes(x = species,
                      y = body_mass_g)) +
   geom_boxplot()
@@ -1079,7 +1089,7 @@ ggplot(penguins, aes(x = species,
 :::
 
 ::: {.column width=49%}
-```{r boxplot2, warning = FALSE, fig.height = 4.1}
+```{r boxplot2, warning = FALSE, fig.height = 3.8}
 ggplot(penguins, aes(x = body_mass_g,
                      y = species)) +
   geom_boxplot()
@@ -1096,7 +1106,7 @@ ggplot(penguins, aes(x = body_mass_g,
 
 ::: {.column width=49%}
 
-```{r barplot1, warning = FALSE, fig.height = 4.1}
+```{r barplot1, warning = FALSE, fig.height = 3.9}
 ggplot(penguins, aes(x = species)) +
   geom_bar()
 
@@ -1104,7 +1114,7 @@ ggplot(penguins, aes(x = species)) +
 :::
 
 ::: {.column width=49%}
-```{r barplot2, warning = FALSE, fig.height = 4.1}
+```{r barplot2, warning = FALSE, fig.height = 3.7}
 ggplot(penguins, aes(x = species,
                      fill = island)) +
   geom_bar()
@@ -1121,7 +1131,7 @@ ggplot(penguins, aes(x = species,
 
 ::: {.column width=49%}
 
-```{r barplot3, warning = FALSE, fig.height = 4.1}
+```{r barplot3, warning = FALSE, fig.height = 3.8}
 ggplot(penguins, aes(x = species,
                      fill = island)) +
   geom_bar(position = "fill")
@@ -1129,7 +1139,7 @@ ggplot(penguins, aes(x = species,
 :::
 
 ::: {.column width=49%}
-```{r barplot4, warning = FALSE, fig.height = 4.1}
+```{r barplot4, warning = FALSE, fig.height = 3.8}
 ggplot(penguins, aes(x = species,
                      fill = sex)) +
   geom_bar(position = "dodge")
@@ -1147,7 +1157,7 @@ ggplot(penguins, aes(x = species,
 
 ::: {.column width=49%}
 
-```{r scatter1, warning = FALSE, message = FALSE, fig.height = 3.8}
+```{r scatter1, warning = FALSE, message = FALSE, fig.height = 3.5}
 ggplot(penguins, aes(x = bill_depth_mm,
                      y = bill_length_mm)) +
   geom_point() +
@@ -1156,7 +1166,7 @@ ggplot(penguins, aes(x = bill_depth_mm,
 :::
 
 ::: {.column width=49%}
-```{r scatter2, warning = FALSE, message = FALSE, fig.height = 3.6}
+```{r scatter2, warning = FALSE, message = FALSE, fig.height = 3.3}
 ggplot(penguins, aes(x = bill_depth_mm,
                      y = bill_length_mm,
                      col = species)) +
@@ -1306,7 +1316,7 @@ p
 :::
 
 ::: {.column width=49%}
-```{r  message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r  message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.3}
 p
 ```
 :::
@@ -1315,7 +1325,7 @@ p
 
 ### Manually changing colours
 
-
+\vspace{-1em}
 
 :::: {.columns}
 
@@ -1331,7 +1341,7 @@ p +
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "manualcol", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "manualcol", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
@@ -1339,6 +1349,9 @@ p +
 
 
 ### Viridis colour scale
+
+\vspace{-1em}
+
 
 :::: {.columns}
 
@@ -1356,13 +1369,15 @@ p +
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "viridiscol", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "viridiscol", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.3}
 ```
 :::
 
 ::::
 
 ### Viridis colour scale (cont.)
+
+\vspace{-1em}
 
 :::: {.columns}
 
@@ -1382,7 +1397,38 @@ tibble(
 :::
 
 ::: {.column width=49%}
-```{r ref.label = "viridiscol2", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.5}
+```{r ref.label = "viridiscol2", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.6}
+```
+:::
+
+::::
+
+## GIS data
+
+R handles GIS data via `sf` (simple features) objects.
+
+:::: {.columns}
+
+::: {.column width=49%}
+
+```{r bruneimap, warning = FALSE, message = FALSE, fig.show = "hide"}
+library(sf)
+library(bruneimap)
+# remotes::install.packages(
+#   "propertypricebn/bruneimap"
+# )
+ 
+ggplot(kpg_sf) +
+  geom_sf(aes(fill = mukim)) +
+  geom_sf(data = mkm_sf, col = "black", 
+          lwd = 0.5, fill = NA) +
+  theme(legend.position = "none") +
+  scale_fill_viridis_d(option = "turbo")
+```
+:::
+
+::: {.column width=49%}
+```{r ref.label = "bruneimap", message = FALSE, echo = FALSE, warning = FALSE, fig.height = 4.6}
 ```
 :::
 
@@ -1541,12 +1587,11 @@ p1 + p2 + p3 + p4 + plot_layout(nrow = 2)
 
 ### Plot composition (cont.)
 
+\vspace{-0.5em}
+
 ```{r, warning = FALSE, message = FALSE, out.width = "100%", fig.align = "center", fig.width = 9, fig.height = 3.8}
 p1 / (p2 + p3 + p4)
 ```
-
-
-
 
 
 
