@@ -255,13 +255,13 @@ usethis::git_sitrep()
 
 ### Git vs GitHub
 
-```{r echo = FALSE}
+```{r echo = FALSE, out.width = "100%"}
 knitr::include_graphics("figure/git1.png")
 ```
 
 ### Git vs GitHub (cont.)
 
-```{r echo = FALSE}
+```{r echo = FALSE, out.width = "100%"}
 knitr::include_graphics("figure/git2.png")
 ```
 
